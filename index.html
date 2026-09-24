@@ -5,11 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KINGEA - Climbing Energy & Calorie Planner</title>
 
-    <!-- iOS / PWA Web App Meta Tags -->
+    <!-- PWA Meta Tags -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="KINGEA">
-    <link rel="apple-touch-icon" href="crown.png">
 
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -95,7 +94,7 @@
 
             <!-- Custom Active Wall Time Calculator -->
             <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 space-y-4">
-                <div class="text-xs font-bold text-slate-700">⏱️ หรือคำนวณจากเวลาปีนจริงบนผนัง (Active Wall Time Calculator)</div>
+                <div class="text-xs font-bold text-slate-700">⏱️ คำนวณตามน้ำหนักตัวและเวลาปีนจริงบนผนัง (MET Adjusted)</div>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
                     <div>
                         <label class="block text-slate-600 mb-1">เวลารวมในยิม (นาที):</label>
@@ -107,7 +106,7 @@
                     </div>
                     <div class="flex items-end">
                         <button type="button" onclick="applyWallTimeEee()" class="w-full py-2.5 px-4 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-lg transition shadow-xs cursor-pointer">
-                            ใช้ค่าที่คำนวณนี้ ( <span id="wallTimeEeeResult">275</span> kcal )
+                            ใช้ค่านี้ ( <span id="wallTimeEeeResult">281</span> kcal )
                         </button>
                     </div>
                 </div>
@@ -155,8 +154,8 @@
                     </div>
 
                     <div class="pt-3 border-t border-slate-200 text-xs text-slate-500 space-y-1">
-                        <div class="flex justify-between"><span>มวลปลอดไขมัน (FFM):</span> <strong text-slate-800 id="ffmDisplay">61.5 kg</strong></div>
-                        <div class="flex justify-between"><span>อัตราเผาผลาญพื้นฐาน (BMR):</span> <strong text-slate-800 id="bmrDisplay">1,698 kcal</strong></div>
+                        <div class="flex justify-between"><span>มวลปลอดไขมัน (FFM):</span> <strong class="text-slate-800" id="ffmDisplay">61.5 kg</strong></div>
+                        <div class="flex justify-between"><span>อัตราเผาผลาญพื้นฐาน (BMR):</span> <strong class="text-slate-800" id="bmrDisplay">1,698 kcal</strong></div>
                     </div>
                 </div>
 
@@ -245,8 +244,8 @@
             <div class="p-5 bg-slate-50 rounded-xl border border-slate-200 space-y-4">
                 <div class="flex justify-between items-center text-xs border-b border-slate-200 pb-3">
                     <div>
-                        <span class="font-bold text-slate-800">เปรียบเทียบกับวิธี TDEE -20% แบบเดิม:</span>
-                        <span class="text-slate-500 block">วิธีกินแคลอรีเท่ากันทุกวัน (กินที่ <strong text-slate-700 id="tdeeFixedVal">2,106</strong> kcal/วัน)</span>
+                        <span class="font-bold text-slate-800">เปรียบเทียบกับวิธี TDEE แบบเดิม:</span>
+                        <span class="text-slate-500 block">วิธีกินแคลอรีเท่ากันทุกวัน (กินที่ <strong class="text-slate-700" id="tdeeFixedVal">2,106</strong> kcal/วัน)</span>
                     </div>
                     <div class="text-right">
                         <div class="text-xs font-bold text-slate-600">EA วันพัก: <span id="tdeeEaRestVal" class="text-slate-800">34.2</span></div>
@@ -389,12 +388,8 @@
         let intakeChartInstance = null;
         let eaZoneChartInstance = null;
 
-        // Goal EA Mapping
-        const goalEaMap = {
-            'cut': 33,
-            'maintain': 45,
-            'muscle': 48
-        };
+        // Goal Mappings
+        const goalEaMap = { 'cut': 33, 'maintain': 45, 'muscle': 48 };
 
         const goalDescMap = {
             'cut': '<strong>คำแนะนำช่วงลดไขมัน:</strong> กำหนด EA ไว้ที่ 33 kcal/kg FFM ซึ่งเป็นจุดที่ดึงไขมันสะสมออกมาใช้ได้มากที่สุด โดยไม่ทำให้ฮอร์โมนไทรอยด์ตก และรักษามวลกล้ามเนื้อไว้ได้ครบถ้วน',
@@ -432,15 +427,21 @@
             }
         }
 
-        // Preset Helper
+        // Preset & MET Calculation Helper
         function setEeePreset(value) {
             eeeInput.value = value;
             calculate();
         }
 
+        // Weight-Dependent MET Formula for Rock Climbing Active Wall Time
         function calculateWallTimeEee() {
             const activeMin = parseFloat(activeWallMin.value) || 0;
-            const calculated = Math.round(activeMin * 11);
+            const weight = parseFloat(weightInput.value) || 75;
+            
+            // Rock Climbing (Bouldering/Lead Active Wall Time) ~ 9.0 METs
+            const met = 9.0;
+            const calculated = Math.round(met * weight * (activeMin / 60));
+            
             wallTimeEeeResult.textContent = calculated;
             return calculated;
         }
@@ -459,6 +460,9 @@
             const goalKey = goalSelect.value;
             const targetEa = goalEaMap[goalKey] || 33;
 
+            // Recalculate preview MET wall time live when weight changes
+            calculateWallTimeEee();
+
             // Update Input Value Displays
             weightVal.textContent = `${weight} kg`;
             bfVal.textContent = `${bf}%`;
@@ -468,7 +472,7 @@
             // Goal Description Update
             goalDescription.innerHTML = goalDescMap[goalKey];
 
-            // 1. FFM & BMR (Katch-McArdle)
+            // 1. FFM & BMR (Katch-McArdle Formula)
             const ffm = weight * (1 - (bf / 100));
             const bmr = 370 + (21.6 * ffm);
 
@@ -500,9 +504,15 @@
             climbMacroF.textContent = `${Math.round(climbF)}g`;
             climbMacroC.textContent = `${Math.round(climbC)}g`;
 
-            // 3. TDEE Model Comparison
+            // 3. TDEE Model Comparison (Adjusted for Surplus in Muscle Goal)
             const tdeeBaseline = bmr * 1.55;
-            const tdeeFixed = goalKey === 'cut' ? tdeeBaseline * 0.80 : tdeeBaseline;
+            let tdeeFixed = tdeeBaseline;
+            
+            if (goalKey === 'cut') {
+                tdeeFixed = tdeeBaseline * 0.80; // Cut 20%
+            } else if (goalKey === 'muscle') {
+                tdeeFixed = tdeeBaseline * 1.10; // Surplus +10%
+            }
             
             const tdeeEaRest = tdeeFixed / ffm;
             const tdeeEaClimb = (tdeeFixed - eee) / ffm;
@@ -516,7 +526,7 @@
 
                 leaAlert.className = "p-4 rounded-xl bg-red-100 text-red-900 border border-red-200 text-xs flex items-start space-x-3";
                 leaAlertTitle.textContent = "คำเตือนภาวะ LEA จากการกินตาม TDEE แบบคงที่";
-                leaAlertText.textContent = `หากกินแคลอรีเท่ากันทุกวัน (${Math.round(tdeeFixed).toLocaleString()} kcal) ในวันปีนผา ค่า EA ของคุณจะตกลงเหลือเพียง ${tdeeEaClimb.toFixed(1)} kcal/kg FFM ซึ่งต่ำกว่าเกณฑ์ความปลอดภัย (<30 kcal) เสี่ยงต่อการสลายกล้ามเนื้อและอัตราเผาผลาญลดลง`;
+                leaAlertText.textContent = `หากกินแคลอรีเท่ากันทุกวัน (${Math.round(tdeeFixed).toLocaleString()} kcal) ในวันปีนผาค่า EA ของคุณจะตกลงเหลือเพียง ${tdeeEaClimb.toFixed(1)} kcal/kg FFM ซึ่งต่ำกว่าเกณฑ์ความปลอดภัย (<30 kcal) เสี่ยงต่อการสลายกล้ามเนื้อและอัตราเผาผลาญลดลง`;
             } else {
                 tdeeEaClimbVal.className = "text-emerald-600 font-bold";
                 tdeeEaClimbVal.textContent = `${tdeeEaClimb.toFixed(1)} (Safe ✅)`;
@@ -525,6 +535,9 @@
                 leaAlertTitle.textContent = "สภาวะปลอดภัย: พลังงานเพียงพอตลอดทั้งสัปดาห์";
                 leaAlertText.textContent = `ค่า EA ในวันปีนผาอยู่ที่ ${tdeeEaClimb.toFixed(1)} kcal/kg FFM ซึ่งอยู่ในเกณฑ์ที่ปลอดภัย ไม่เสี่ยงต่อภาวะ LEA`;
             }
+
+            // Sync EA Card at the bottom with selected goal
+            syncEaReferenceCard(goalKey);
 
             // Update Charts & Save
             updateCharts(tdeeFixed, restIntake, climbIntake, tdeeEaRest, tdeeEaClimb, targetEa);
@@ -539,18 +552,8 @@
                 data: {
                     labels: ['วันพัก (Rest Day)', 'วันปีนผา (Climbing Day)'],
                     datasets: [
-                        {
-                            label: 'TDEE Model (กินเท่ากัน)',
-                            data: [0, 0],
-                            backgroundColor: '#f59e0b',
-                            borderRadius: 6
-                        },
-                        {
-                            label: 'EA Strategy (ยืดหยุ่นตามกิจกรรม)',
-                            data: [0, 0],
-                            backgroundColor: '#2563eb',
-                            borderRadius: 6
-                        }
+                        { label: 'TDEE Model (กินเท่ากัน)', data: [0, 0], backgroundColor: '#f59e0b', borderRadius: 6 },
+                        { label: 'EA Strategy (ยืดหยุ่นตามกิจกรรม)', data: [0, 0], backgroundColor: '#2563eb', borderRadius: 6 }
                     ]
                 },
                 options: {
@@ -623,11 +626,17 @@
             document.getElementById('detailAdvice').textContent = data.advice;
         }
 
-        // Listeners
-        [weightInput, bfInput, eeeInput, goalSelect].forEach(el => {
+        function syncEaReferenceCard(goalKey) {
+            if (goalKey === 'cut') selectEaLevel(2); // Moderate Deficit (EA 33)
+            else if (goalKey === 'maintain' || goalKey === 'muscle') selectEaLevel(0); // Optimal EA (EA 45+)
+        }
+
+        // Clean & Non-Redundant Event Listeners
+        [weightInput, bfInput, eeeInput].forEach(el => {
             el.addEventListener('input', calculate);
-            el.addEventListener('change', calculate);
         });
+
+        goalSelect.addEventListener('change', calculate);
 
         [totalSessionMin, activeWallMin].forEach(el => {
             el.addEventListener('input', calculateWallTimeEee);
@@ -637,7 +646,6 @@
         window.addEventListener('DOMContentLoaded', () => {
             initCharts();
             loadSettings();
-            calculateWallTimeEee();
             calculate();
         });
     </script>
