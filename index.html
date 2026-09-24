@@ -1,30 +1,22 @@
 <!DOCTYPE html>
 <html lang="th">
-    <head>
-  <meta charset="UTF-8">
-  <title>KINGEA</title>
-
-  <!-- แท็กอื่นๆ... -->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-
-  <!-- 🔥 นี่คือโค้ดสำหรับกำหนดรูปไอคอนบน Home Screen 🔥 -->
-  <!-- ตรวจสอบให้มั่นใจว่าชื่อไฟล์รูปภาพใน href="..." ตรงกับไฟล์ที่คุณอัปโหลด -->
-  <link rel="apple-touch-icon" href="crown.png">
-  
-  <!-- สามารถใส่ขนาดระบุเจาะจงได้ (ทางเลือก) -->
-  <!-- <link rel="apple-touch-icon" sizes="180x180" href="icon-180.png"> -->
-</head>
-    <head>
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>รายงานวิเคราะห์และเครื่องมือคำนวณ TDEE vs Energy Availability (EA)</title>
-    <!-- Tailwind CSS -->
+    <title>KINGEA - TDEE vs Energy Availability (EA) Dashboard</title>
+
+    <!-- iOS / PWA Web App Meta Tags -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="KINGEA">
+    <link rel="apple-touch-icon" href="crown.png">
+
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Chart.js CDN -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <style>
-        /* Custom Chart Container Rules */
         .chart-container {
             position: relative;
             width: 100%;
@@ -38,11 +30,6 @@
             .chart-container {
                 height: 360px;
             }
-        }
-        .tab-btn.active {
-            border-bottom: 3px solid #2563eb;
-            color: #2563eb;
-            font-weight: 600;
         }
         .ea-card-btn {
             transition: all 0.2s ease-in-out;
@@ -112,7 +99,7 @@
                     </h3>
 
                     <div>
-                        <label class="block text-xs font-semibold text-slate-700 mb-1">น้ำหนักตัว (kg): <span id="weightVal" class="text-blue-600 font-bold">75</span></label>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">น้ำหนักตัว (kg): <span id="weightVal" class="text-blue-600 font-bold">75</span> kg</label>
                         <input type="range" id="weight" min="50" max="110" value="75" step="0.5" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-blue-600">
                     </div>
 
@@ -122,12 +109,12 @@
                     </div>
 
                     <div>
-                        <label class="block text-xs font-semibold text-slate-700 mb-1">พลังงานปีนผาโดยประมาณ (EEE - kcal): <span id="eeeVal" class="text-amber-600 font-bold">300</span></label>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">พลังงานปีนผาโดยประมาณ (EEE - kcal): <span id="eeeVal" class="text-amber-600 font-bold">300</span> kcal</label>
                         <input type="range" id="eee" min="100" max="700" value="300" step="10" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-amber-600">
                     </div>
 
                     <div>
-                        <label class="block text-xs font-semibold text-slate-700 mb-1">เป้าหมาย EA สำหรับลดไขมัน (kcal/kg FFM): <span id="targetEaVal" class="text-emerald-600 font-bold">35</span></label>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">เป้าหมาย EA สำหรับลดไขมัน (kcal/kg FFM):</label>
                         <select id="targetEa" class="w-full text-xs p-2.5 bg-white border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
                             <option value="35" selected>35 - Fat Loss Sweet Spot (แนะนำสำหรับการลดไขมันปลอดภัย)</option>
                             <option value="32">32 - Moderate Deficit (ลดไขมันไวขึ้น)</option>
@@ -196,8 +183,8 @@
                     <div id="leaAlert" class="p-4 rounded-xl bg-red-100 text-red-900 border border-red-200 text-xs flex items-start space-x-3">
                         <span class="text-xl">⚠️</span>
                         <div>
-                            <div class="font-bold text-sm mb-0.5">คำเตือน: ความเสี่ยงภาวะ LEA จากโมเดล TDEE</div>
-                            <p id="leaAlertText">หากรับประทานอาหารตามโมเดล TDEE (2,106 kcal) ในวันปีนผา ค่า EA ของคุณจะลดลงเหลือเพียง 29.3 kcal/kg FFM/day ซึ่งต่ำกว่าเกณฑ์ความปลอดภัย (&lt;30 kcal) เสี่ยงต่อการสลายกล้ามเนื้อและอัตราเผาผลาญ RMR ลดลง</p>
+                            <div class="font-bold text-sm mb-0.5" id="leaAlertTitle">คำเตือน: ความเสี่ยงภาวะ LEA จากโมเดล TDEE</div>
+                            <p id="leaAlertText">หากรับประทานอาหารตามโมเดล TDEE ในวันปีนผา ค่า EA ของคุณจะลดลงเหลือเพียง 29.3 kcal/kg FFM/day ซึ่งต่ำกว่าเกณฑ์ความปลอดภัย (&lt;30 kcal) เสี่ยงต่อการสลายกล้ามเนื้อและอัตราเผาผลาญ RMR ลดลง</p>
                         </div>
                     </div>
 
@@ -266,7 +253,6 @@
 
             <!-- Clickable EA Criteria Cards -->
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-                <!-- Level 1 Button Card -->
                 <button type="button" onclick="selectEaLevel(0)" id="eaBtn-0" class="ea-card-btn text-left p-5 rounded-xl border border-blue-200 bg-blue-50/30 space-y-2 focus:outline-none cursor-pointer hover:border-blue-400">
                     <div class="flex justify-between items-center">
                         <span class="text-xs font-bold text-blue-800 uppercase tracking-wider">≥ 45 kcal/kg FFM</span>
@@ -277,7 +263,6 @@
                     <span class="inline-block text-[11px] font-semibold text-blue-700 bg-blue-100 px-2 py-0.5 rounded">รักษาน้ำหนัก / เพิ่มกล้าม</span>
                 </button>
 
-                <!-- Level 2 Button Card -->
                 <button type="button" onclick="selectEaLevel(1)" id="eaBtn-1" class="ea-card-btn text-left p-5 rounded-xl border border-emerald-200 bg-emerald-50/30 space-y-2 focus:outline-none cursor-pointer hover:border-emerald-400">
                     <div class="flex justify-between items-center">
                         <span class="text-xs font-bold text-emerald-800 uppercase tracking-wider">35 - 44 kcal/kg FFM</span>
@@ -288,7 +273,6 @@
                     <span class="inline-block text-[11px] font-semibold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded">ลดไขมันช้าปลอดภัย</span>
                 </button>
 
-                <!-- Level 3 Button Card -->
                 <button type="button" onclick="selectEaLevel(2)" id="eaBtn-2" class="ea-card-btn text-left p-5 rounded-xl border border-amber-300 bg-amber-50 space-y-2 focus:outline-none cursor-pointer hover:border-amber-400 ring-2 ring-amber-500 shadow-md">
                     <div class="flex justify-between items-center">
                         <span class="text-xs font-bold text-amber-800 uppercase tracking-wider">30 - 35 kcal/kg FFM</span>
@@ -299,7 +283,6 @@
                     <span class="inline-block text-[11px] font-semibold text-amber-800 bg-amber-100 px-2 py-0.5 rounded">โซนเป้าหมายแนะนำ ⭐</span>
                 </button>
 
-                <!-- Level 4 Button Card -->
                 <button type="button" onclick="selectEaLevel(3)" id="eaBtn-3" class="ea-card-btn text-left p-5 rounded-xl border border-red-200 bg-red-50/30 space-y-2 focus:outline-none cursor-pointer hover:border-red-400">
                     <div class="flex justify-between items-center">
                         <span class="text-xs font-bold text-red-800 uppercase tracking-wider">&lt; 30 kcal/kg FFM</span>
@@ -437,112 +420,21 @@
                             <div class="text-amber-100 text-[11px] uppercase font-bold tracking-wider">พลังงานปีนผาจริง (Realistic EEE)</div>
                             <div class="text-3xl font-extrabold my-1" id="realisticEeeDisplay">220 kcal</div>
                         </div>
-                        <div class="text-[11px] text-amber-100/90 border-t border-amber-400/50 pt-2">
-                            นำค่านี้ไปป้อนใน <a href="#calculator" class="underline font-bold text-white hover:text-amber-200">ช่อง EEE เครื่องมือคำนวณ</a> ด้านบน
+                        <div class="text-[11px] text-amber-100/90 border-t border-amber-400/50 pt-2 flex justify-between items-center">
+                            <span>คัดลอกค่านี้ไปใช้?</span>
+                            <button type="button" onclick="applyEeeToCalculator()" class="px-2.5 py-1 bg-white text-amber-800 font-bold rounded hover:bg-amber-100 transition shadow-xs cursor-pointer">
+                                ⚡ ส่งไปที่ EEE
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Practical Implementation Section -->
-        <section class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-slate-200 space-y-6">
-            <div>
-                <span class="inline-block px-3 py-1 bg-blue-100 text-blue-800 text-xs font-semibold rounded-full mb-2">Practical Blueprint</span>
-                <h2 class="text-2xl font-bold text-slate-900">แนวทางการประยุกต์ใช้ทางปฏิบัติ (Hybrid EA-TDEE Framework)</h2>
-                <p class="text-sm text-slate-500 mt-1">4 ขั้นตอนการวางแผนอาหารเพื่อการลดไขมันยั่งยืนสำหรับนักปีนผาออฟฟิศ</p>
-            </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 relative">
-                    <div class="w-7 h-7 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold text-xs mb-3">1</div>
-                    <h3 class="font-bold text-slate-800 text-sm mb-1">วัดหาค่า FFM ที่แม่นยำ</h3>
-                    <p class="text-xs text-slate-600">ใช้ DEXA scan, InBody หรือ Caliper วัดเปอร์เซ็นต์ไขมันเพื่อคำนวณมวลปลอดไขมัน ($\text{FFM} = \text{BW} \times (1 - \text{BF\%})$)</p>
-                </div>
-
-                <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 relative">
-                    <div class="w-7 h-7 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold text-xs mb-3">2</div>
-                    <h3 class="font-bold text-slate-800 text-sm mb-1">ตั้งค่า EA Base (Rest Day)</h3>
-                    <p class="text-xs text-slate-600">กำหนดพื้นพลังงานขั้นต่ำในวันพักไว้ที่ $35 \times \text{FFM}$ (เช่น $35 \times 61.5 = 2,153$ kcal) เป็นพื้นความปลอดภัย (Safety Floor)</p>
-                </div>
-
-                <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 relative">
-                    <div class="w-7 h-7 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold text-xs mb-3">3</div>
-                    <h3 class="font-bold text-slate-800 text-sm mb-1">บวก EEE ตาม Active Time</h3>
-                    <p class="text-xs text-slate-600">ในวันปีนผา ให้บวกแคลอรีเพิ่มเฉพาะเวลาปีนจริง ($20\text{ นาที} \times 11\text{ kcal} = 220$ kcal) เพื่อเพิ่มพลังงานเข้าสู่ร่างกาย</p>
-                </div>
-
-                <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 relative">
-                    <div class="w-7 h-7 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold text-xs mb-3">4</div>
-                    <h3 class="font-bold text-slate-800 text-sm mb-1">กระจาย Macro สอดคล้อง</h3>
-                    <p class="text-xs text-slate-600">เน้นโปรตีน $1.8-2.0\text{ g/kg}$ และเพิ่มคาร์โบไฮเดรตในวันปีนผาเพื่อเติมไกลโคเจนในกล้ามเนื้อและป้องกันการล้า</p>
-                </div>
-            </div>
-        </section>
-
     </main>
 
-    <footer class="bg-slate-900 text-slate-400 py-8 border-t border-slate-800 mt-12 text-center text-xs">
-        <div class="max-w-7xl mx-auto px-4 space-y-2">
-            <p>รายงานเชิงลึกและแอปพลิเคชันวิเคราะห์ TDEE vs Energy Availability (EA) เพื่อนักปีนผาออฟฟิศ</p>
-            <p class="text-slate-500">ข้อมูลนี้จัดทำขึ้นเพื่อวัตถุประสงค์ในการให้ความรู้เท่านั้น ไม่ใช่คำแนะนำทางการแพทย์</p>
-        </div>
-    </footer>
-
-    <!-- Application Script -->
+    <!-- JavaScript Logic -->
     <script>
-        // Data structure for the EA Criteria dynamic interactive details
-        const eaLevelsData = [
-            {
-                range: "≥ 45 kcal / kg FFM / day",
-                title: "Optimal EA (สภาวะพลังงานสมบูรณ์)",
-                icon: "🛡️",
-                statusTag: "รักษาน้ำหนัก / เพิ่มมวลกล้ามเนื้อ",
-                tagStyle: "bg-blue-100 text-blue-900 border-blue-300",
-                panelBg: "bg-blue-50/70 border-blue-200",
-                rmr: "ทำงานได้เต็มประสิทธิภาพ 100% ไม่เกิดการสงวนพลังงานหรือ Adaptive Thermogenesis ร่างกายพร้อมสำหรับการสร้างเนื้อเยื่อใหม่",
-                hormone: "ฮอร์โมน T3, Leptin, Testo/Estrogen และ IGF-1 อยู่ในระดับสูงสุด สมดุลระบบต่อมไร้ท่อและระบบสืบพันธุ์สมบูรณ์",
-                muscle: "อัตราการสังเคราะห์โปรตีนในกล้ามเนื้อ (MPS) สูงสุด เหมาะสมอย่างยิ่งสำหรับการฝึกซ้อมเพื่อเพิ่มมวลกล้ามเนื้อและแรงเกร็ง (Hypertrophy & Strength)",
-                advice: "เหมาะสำหรับช่วง Off-season, ช่วงสร้างความแข็งแรงสูงสุด หรือรักษาน้ำหนักตัว ไม่เกิดการลดไขมันสะสม"
-            },
-            {
-                range: "35 - 44 kcal / kg FFM / day",
-                title: "Mild Deficit (ลดไขมันช้าๆ อย่างปลอดภัย)",
-                icon: "🌱",
-                statusTag: "โซนลดไขมันแบบค่อยเป็นค่อยไป",
-                tagStyle: "bg-emerald-100 text-emerald-900 border-emerald-300",
-                panelBg: "bg-emerald-50/70 border-emerald-200",
-                rmr: "อัตราการเผาผลาญลดลงเพียงเล็กน้อยตามน้ำหนักตัวที่หายไป ร่างกายยังคงเผาผลาญพลังงานได้ดีต่อเนื่อง ไม่เกิดภาวะระบบเผาผลาญพัง",
-                hormone: "ฮอร์โมนสำคัญยังอยู่ในเกณฑ์ปกติ ไม่เกิดความเครียดเรื้อรัง (Cortisol ไม่พุ่งสูง) อาการหิวและโหยอาหารอยู่ในระดับต่ำ",
-                muscle: "รักษามวลกล้ามเนื้อ (Lean Mass) ได้ดีเยี่ยม การฟื้นฟูหลังซ้อมปีนผาทำได้อย่างรวดเร็ว ไม่รู้สึกอ่อนล้าสะสม",
-                advice: "แนะนำสำหรับผู้ที่ต้องการลดไขมันในระยะยาว ไม่รีบร้อน และต้องการคงฟอร์มการปีนผาไว้ให้ได้ดีที่สุด"
-            },
-            {
-                range: "30 - 35 kcal / kg FFM / day",
-                title: "Moderate Deficit (Fat Loss Sweet Spot)",
-                icon: "⭐",
-                statusTag: "โซนลดไขมันยอดเยี่ยมและปลอดภัย (แนะนำ)",
-                tagStyle: "bg-amber-100 text-amber-900 border-amber-300",
-                panelBg: "bg-amber-50/70 border-amber-200",
-                rmr: "ทำงานสอดคล้องกับแคลอรีที่ได้รับ อยู่ตรงเกณฑ์พื้นฐานความปลอดภัย (Safety Floor) ดึงไขมันสะสมออกมาใช้ได้มากที่สุด",
-                hormone: "ฮอร์โมน T3 และ Leptin เริ่มลดลงเล็กน้อยแต่ยังรักษาสมดุลได้ สามารถควบคุมความหิวได้ดีเมื่อได้รับโปรตีนเพียงพอ",
-                muscle: "สามารถคงมวลกล้ามเนื้อและกำลังเกร็งนิ้ว/ไหล่ได้ หากได้รับโปรตีน 1.8 - 2.0 g/kg และคาร์โบไฮเดรตเพียงพอช่วงก่อน/หลังปีนผา",
-                advice: "เกณฑ์แนะนำสำหรับการลดไขมันของนักปีนผา เพื่อเพิ่ม Strength-to-Weight Ratio โดยไม่เสี่ยงเจ็บป่วย"
-            },
-            {
-                range: "< 30 kcal / kg FFM / day",
-                title: "Low Energy Availability (LEA / Zone อันตราย)",
-                icon: "⚠️",
-                statusTag: "อันตราย: เสี่ยงต่อ REDs และสลายกล้ามเนื้อ",
-                tagStyle: "bg-red-100 text-red-900 border-red-300",
-                panelBg: "bg-red-50/70 border-red-200",
-                rmr: "เข้าสู่โหมดประหยัดพลังงานฉุกเฉิน เกิด Adaptive Thermogenesis รุนแรง RMR ดิ่งลงผิดปกติ (>250-400 kcal/วัน)",
-                hormone: "T3 และ Leptin ตกต่ำอย่างรวดเร็ว, Cortisol สูงปรี๊ด เสี่ยงต่อภาวะประจำเดือนผิดปกติในผู้หญิง และเทสโทสเตอโรนต่ำในผู้ชาย",
-                muscle: "กระบวนการสังเคราะห์โปรตีน (MPS) ถูกยับยั้ง ร่างกายสลายกล้ามเนื้อและเนื้อเยื่อเกี่ยวพันมาเป็นพลังงาน เสี่ยงบาดเจ็บเอ็นนิ้ว/ไหล่สูงมาก",
-                advice: "ควรหลีกเลี่ยงอย่างยิ่ง! หากเข้าสู่โซนนี้เกิน 3-5 วัน ต้องปรับเพิ่มแคลอรีทันทีเพื่อป้องกันภาวะ REDs"
-            }
-        ];
-
         // DOM Elements
         const weightInput = document.getElementById('weight');
         const bfInput = document.getElementById('bf');
@@ -552,99 +444,201 @@
         const weightVal = document.getElementById('weightVal');
         const bfVal = document.getElementById('bfVal');
         const eeeVal = document.getElementById('eeeVal');
-        const targetEaVal = document.getElementById('targetEaVal');
 
         const ffmDisplay = document.getElementById('ffmDisplay');
         const bmrDisplay = document.getElementById('bmrDisplay');
-        const tdeeDeficitDisplay = document.getElementById('tdeeDeficitDisplay');
-        const eaTargetDisplay = document.getElementById('eaTargetDisplay');
 
+        const tdeeDeficitDisplay = document.getElementById('tdeeDeficitDisplay');
         const tdeeEaRest = document.getElementById('tdeeEaRest');
         const tdeeEaClimb = document.getElementById('tdeeEaClimb');
+
+        const eaTargetDisplay = document.getElementById('eaTargetDisplay');
         const eaRestIntake = document.getElementById('eaRestIntake');
         const eaClimbIntake = document.getElementById('eaClimbIntake');
 
         const leaAlert = document.getElementById('leaAlert');
+        const leaAlertTitle = document.getElementById('leaAlertTitle');
         const leaAlertText = document.getElementById('leaAlertText');
 
+        // Macro DOM Elements
         const macroRestP = document.getElementById('macroRestP');
         const macroRestC = document.getElementById('macroRestC');
         const macroRestF = document.getElementById('macroRestF');
+
         const macroClimbP = document.getElementById('macroClimbP');
         const macroClimbC = document.getElementById('macroClimbC');
         const macroClimbF = document.getElementById('macroClimbF');
 
+        // Wall Time Calculator Elements
         const totalSessionMin = document.getElementById('totalSessionMin');
         const activeWallMin = document.getElementById('activeWallMin');
         const realisticEeeDisplay = document.getElementById('realisticEeeDisplay');
 
-        // Dynamic EA Detail Panel Elements
-        const eaDetailPanel = document.getElementById('eaDetailPanel');
-        const detailIcon = document.getElementById('detailIcon');
-        const detailRange = document.getElementById('detailRange');
-        const detailTitle = document.getElementById('detailTitle');
-        const detailStatusTag = document.getElementById('detailStatusTag');
-        const detailRmr = document.getElementById('detailRmr');
-        const detailHormone = document.getElementById('detailHormone');
-        const detailMuscle = document.getElementById('detailMuscle');
-        const detailAdvice = document.getElementById('detailAdvice');
-
         // Chart Instances
-        let intakeChart, eaZoneChart;
-        let selectedEaIndex = 2; // Default select level 3 (Sweet Spot)
+        let intakeChartInstance = null;
+        let eaZoneChartInstance = null;
 
-        function selectEaLevel(index) {
-            selectedEaIndex = index;
-            const data = eaLevelsData[index];
-
-            // Update Panel Text
-            detailIcon.textContent = data.icon;
-            detailRange.textContent = data.range;
-            detailTitle.textContent = data.title;
-            detailStatusTag.textContent = data.statusTag;
-            detailStatusTag.className = `px-3 py-1 text-xs font-bold rounded-full border ${data.tagStyle}`;
-            
-            detailRmr.textContent = data.rmr;
-            detailHormone.textContent = data.hormone;
-            detailMuscle.textContent = data.muscle;
-            detailAdvice.textContent = data.advice;
-
-            // Update Panel Container Style
-            eaDetailPanel.className = `${data.panelBg} rounded-xl p-6 transition-all duration-300 shadow-sm`;
-
-            // Update Button Highlights
-            for (let i = 0; i < 4; i++) {
-                const btn = document.getElementById(`eaBtn-${i}`);
-                const badge = document.getElementById(`eaBadge-${i}`);
-                if (i === index) {
-                    btn.classList.add('ring-2', 'ring-amber-500', 'shadow-md');
-                    badge.textContent = "กำลังเลือกอยู่";
-                    badge.className = "text-[10px] bg-amber-500 text-white px-2 py-0.5 rounded-full font-bold";
-                } else {
-                    btn.classList.remove('ring-2', 'ring-amber-500', 'shadow-md');
-                    badge.textContent = "คลิกเพื่อดู";
-                    badge.className = "text-[10px] bg-slate-200 text-slate-700 px-2 py-0.5 rounded-full font-bold";
-                }
+        // Data for EA Levels Inspection
+        const eaLevelsData = [
+            {
+                range: "≥ 45 kcal / kg FFM / day",
+                title: "Optimal EA (สภาวะพลังงานสมบูรณ์)",
+                statusTag: "รักษาน้ำหนัก / เพิ่มมวลกล้ามเนื้อ",
+                statusClass: "bg-blue-100 text-blue-900 border-blue-300",
+                panelClass: "bg-blue-50/70 border-blue-200",
+                icon: "💙",
+                rmr: "ทำงานได้เต็ม 100% สมบูรณ์ ไม่มีการปรับลดลงของระบบเผาผลาญ",
+                hormone: "ฮอร์โมนไทรอยด์ (T3), Leptin และฮอร์โมนเพศทำงานได้เต็มประสิทธิภาพสูงสุด",
+                muscle: "อัตราการสังเคราะห์โปรตีนในกล้ามเนื้อ (MPS) สูงสุด พร้อมสำหรับการสร้างกล้ามเนื้อ",
+                advice: "เหมาะสำหรับช่วงรักษาน้ำหนัก หรือสร้างกล้ามเนื้อเพื่อเพิ่มพาวเวอร์ในการปีน"
+            },
+            {
+                range: "35 - 44 kcal / kg FFM / day",
+                title: "Mild Deficit (ลดไขมันแบบละมุน)",
+                statusTag: "ลดไขมันช้าๆ ปลอดภัยสูง",
+                statusClass: "bg-emerald-100 text-emerald-900 border-emerald-300",
+                panelClass: "bg-emerald-50/70 border-emerald-200",
+                icon: "🌱",
+                rmr: "ทำงานเป็นปกติแทบไม่กระทบ RMR ร่างกายปรับตัวน้อยมาก",
+                hormone: "ฮอร์โมนอยู่ในสมดุลดี ไม่ส่งผลกระทบต่ออารมณ์หรือการนอนหลับ",
+                muscle: "คงมวลกล้ามเนื้อได้อย่างสมบูรณ์ การฟื้นฟูหลังซ้อมทำได้รวดเร็ว",
+                advice: "เหมาะกับผู้ที่ต้องการลดน้ำหนักแบบยั่งยืน ไม่รีบร้อน และต้องการคงฟอร์มการปีนผาให้ได้ดีที่สุด"
+            },
+            {
+                range: "30 - 35 kcal / kg FFM / day",
+                title: "Moderate Deficit (Fat Loss Sweet Spot)",
+                statusTag: "โซนลดไขมันยอดเยี่ยมและปลอดภัย",
+                statusClass: "bg-amber-100 text-amber-900 border-amber-300",
+                panelClass: "bg-amber-50/70 border-amber-200",
+                icon: "⭐",
+                rmr: "ทำงานสอดคล้องกับแคลอรีที่ได้รับ ไม่เกิด Adaptive Thermogenesis รุนแรง",
+                hormone: "ฮอร์โมน T3, Leptin และ Insulin อยู่ในระดับสมดุล ร่างกายสลายไขมันสะสมได้รวดเร็ว",
+                muscle: "การสังเคราะห์โปรตีนทำได้ดีเมื่อได้รับโปรตีน 1.8 - 2.0g/kg สามารถคงพาวเวอร์บนผาได้ดี",
+                advice: "ดึงไขมันสะสมมาใช้ได้ดีที่สุดโดยไม่ส่งผลเสียต่อร่างกาย เหมาะอย่างยิ่งสำหรับช่วงตัดน้ำหนักเพื่อเพิ่ม Strength-to-Weight Ratio"
+            },
+            {
+                range: "< 30 kcal / kg FFM / day",
+                title: "Low EA (LEA - Low Energy Availability)",
+                statusTag: "อันตราย / เสี่ยงภาวะ REDs",
+                statusClass: "bg-red-100 text-red-900 border-red-300",
+                panelClass: "bg-red-50/70 border-red-200",
+                icon: "⚠️",
+                rmr: "เกิด Adaptive Thermogenesis รุนแรง ระบบเผาผลาญปรับลดลง >250 kcal/วัน",
+                hormone: "T3 และ Leptin ตกต่ำอย่างรวดเร็ว, Cortisol พุ่งสูง ร่างกายเครียดสะสม ฟื้นตัวช้า",
+                muscle: "MPS ถูกยับยั้ง ร่างกายเริ่มสลายกล้ามเนื้อเพื่อนำกรดอะมิโนมาใช้เป็นพลังงานชดเชย",
+                advice: "หลีกเลี่ยงการอยู่ในสภาวะนี้ต่อเนื่องเกิน 2-3 วัน เสี่ยงต่อการบาดเจ็บ กระดูกบาง และความแข็งแรงลดลง"
             }
+        ];
+
+        // Main Calculation Engine
+        function calculate() {
+            const weight = parseFloat(weightInput.value);
+            const bf = parseFloat(bfInput.value);
+            const eee = parseFloat(eeeInput.value);
+            const targetEa = parseFloat(targetEaSelect.value);
+
+            // Update range labels
+            weightVal.textContent = weight;
+            bfVal.textContent = bf;
+            eeeVal.textContent = eee;
+
+            // 1. FFM & BMR (Katch-McArdle)
+            const ffm = weight * (1 - (bf / 100));
+            const bmr = 370 + (21.6 * ffm);
+
+            ffmDisplay.textContent = ffm.toFixed(1);
+            bmrDisplay.textContent = Math.round(bmr).toLocaleString();
+
+            // 2. TDEE Model (Multiplier 1.55 for Office worker + Climbing)
+            const tdeeBaseline = bmr * 1.55;
+            const tdeeDeficit = tdeeBaseline * 0.80; // -20% Deficit
+            
+            const tdeeEaRestVal = tdeeDeficit / ffm;
+            const tdeeEaClimbVal = (tdeeDeficit - eee) / ffm;
+
+            tdeeDeficitDisplay.innerHTML = `${Math.round(tdeeDeficit).toLocaleString()} <span class="text-xs font-normal text-slate-500">kcal/วัน</span>`;
+            tdeeEaRest.textContent = `${tdeeEaRestVal.toFixed(1)} kcal`;
+            
+            if (tdeeEaClimbVal < 30) {
+                tdeeEaClimb.className = "font-bold text-red-600";
+                tdeeEaClimb.textContent = `${tdeeEaClimbVal.toFixed(1)} kcal (LEA!)`;
+                
+                // Alert Box Settings
+                leaAlert.className = "p-4 rounded-xl bg-red-100 text-red-900 border border-red-200 text-xs flex items-start space-x-3";
+                leaAlertTitle.textContent = "คำเตือน: ความเสี่ยงภาวะ LEA จากโมเดล TDEE";
+                leaAlertText.textContent = `หากรับประทานอาหารตามโมเดล TDEE (${Math.round(tdeeDeficit).toLocaleString()} kcal) ในวันปีนผา ค่า EA ของคุณจะลดลงเหลือเพียง ${tdeeEaClimbVal.toFixed(1)} kcal/kg FFM/day ซึ่งต่ำกว่าเกณฑ์ความปลอดภัย (<30 kcal) เสี่ยงต่อการสลายกล้ามเนื้อและ RMR ลดลง`;
+            } else {
+                tdeeEaClimb.className = "font-bold text-emerald-600";
+                tdeeEaClimb.textContent = `${tdeeEaClimbVal.toFixed(1)} kcal (Safe)`;
+
+                leaAlert.className = "p-4 rounded-xl bg-emerald-100 text-emerald-900 border border-emerald-200 text-xs flex items-start space-x-3";
+                leaAlertTitle.textContent = "สภาวะปลอดภัย: โมเดล TDEE ยังอยู่ในเกณฑ์ที่รับได้";
+                leaAlertText.textContent = `ค่า EA ในวันปีนผาอยู่ที่ ${tdeeEaClimbVal.toFixed(1)} kcal/kg FFM/day ซึ่งยังไม่ตกไปในโซนอันตราย (<30 kcal)`;
+            }
+
+            // 3. EA Strategy Model
+            const eaRestIntakeVal = (targetEa * ffm);
+            const eaClimbIntakeVal = (targetEa * ffm) + eee;
+
+            eaTargetDisplay.innerHTML = `${Math.round(eaRestIntakeVal).toLocaleString()} - ${Math.round(eaClimbIntakeVal).toLocaleString()} <span class="text-xs font-normal text-slate-500">kcal</span>`;
+            eaRestIntake.textContent = `${Math.round(eaRestIntakeVal).toLocaleString()} kcal`;
+            eaClimbIntake.textContent = `${Math.round(eaClimbIntakeVal).toLocaleString()} kcal`;
+
+            // 4. Macro Calculation
+            // Rest Day
+            const restP = weight * 1.8;
+            const restF = (eaRestIntakeVal * 0.25) / 9;
+            const restC = Math.max(0, (eaRestIntakeVal - (restP * 4) - (restF * 9)) / 4);
+
+            macroRestP.textContent = `${Math.round(restP)}g`;
+            macroRestF.textContent = `${Math.round(restF)}g`;
+            macroRestC.textContent = `${Math.round(restC)}g`;
+
+            // Climb Day
+            const climbP = weight * 2.0;
+            const climbF = (eaClimbIntakeVal * 0.25) / 9;
+            const climbC = Math.max(0, (eaClimbIntakeVal - (climbP * 4) - (climbF * 9)) / 4);
+
+            macroClimbP.textContent = `${Math.round(climbP)}g`;
+            macroClimbF.textContent = `${Math.round(climbF)}g`;
+            macroClimbC.textContent = `${Math.round(climbC)}g`;
+
+            // 5. Update Charts
+            updateCharts(tdeeDeficit, eaRestIntakeVal, eaClimbIntakeVal, tdeeEaRestVal, tdeeEaClimbVal, targetEa);
         }
 
+        // Active Wall Time Calculator Engine
+        function calculateWallTime() {
+            const activeMin = parseFloat(activeWallMin.value) || 0;
+            const eeeCalculated = Math.round(activeMin * 11); // Average 11 kcal/min during active climbing
+            realisticEeeDisplay.textContent = `${eeeCalculated} kcal`;
+            return eeeCalculated;
+        }
+
+        function applyEeeToCalculator() {
+            const val = calculateWallTime();
+            eeeInput.value = Math.min(700, Math.max(100, val));
+            calculate();
+            document.getElementById('calculator').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Initialize Charts
         function initCharts() {
-            // Chart 1: Daily Intake Comparison
-            const ctx1 = document.getElementById('intakeChart').getContext('2d');
-            intakeChart = new Chart(ctx1, {
+            const ctxIntake = document.getElementById('intakeChart').getContext('2d');
+            intakeChartInstance = new Chart(ctxIntake, {
                 type: 'bar',
                 data: {
-                    labels: ['วันพัก (Rest Day)', 'วันปีนผาปกติ (Ea Climb)', 'วันปีนผาหนัก (Hard Climb)'],
+                    labels: ['วันพัก (Rest Day)', 'วันปีนผา (Climbing Day)'],
                     datasets: [
                         {
-                            label: 'วิธี TDEE Deficit (-20%)',
-                            data: [0, 0, 0],
+                            label: 'TDEE Model (-20%)',
+                            data: [0, 0],
                             backgroundColor: '#f59e0b',
                             borderRadius: 6
                         },
                         {
-                            label: 'วิธี EA Target Strategy',
-                            data: [0, 0, 0],
+                            label: 'EA Strategy Model',
+                            data: [0, 0],
                             backgroundColor: '#2563eb',
                             borderRadius: 6
                         }
@@ -653,154 +647,108 @@
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    plugins: {
-                        legend: { position: 'top', labels: { font: { size: 11 } } },
-                        tooltip: {
-                            callbacks: {
-                                label: (context) => `${context.dataset.label}: ${Math.round(context.raw)} kcal`
-                            }
-                        }
-                    },
-                    scales: {
-                        y: { beginAtZero: false, title: { display: true, text: 'Energy Intake (kcal)' } }
-                    }
+                    plugins: { legend: { position: 'bottom' } },
+                    scales: { y: { beginAtZero: false, min: 1000 } }
                 }
             });
 
-            // Chart 2: EA Zone Status
-            const ctx2 = document.getElementById('eaZoneChart').getContext('2d');
-            eaZoneChart = new Chart(ctx2, {
+            const ctxEa = document.getElementById('eaZoneChart').getContext('2d');
+            eaZoneChartInstance = new Chart(ctxEa, {
                 type: 'bar',
                 data: {
-                    labels: ['TDEE: วันพัก', 'TDEE: วันปีนผา', 'EA Strategy: ทุกวัน'],
+                    labels: ['TDEE วันพัก', 'TDEE วันปีน', 'EA วันพัก', 'EA วันปีน'],
                     datasets: [{
-                        label: 'ค่า EA ที่เกิดขึ้นจริง (kcal/kg FFM)',
-                        data: [0, 0, 0],
-                        backgroundColor: ['#10b981', '#ef4444', '#2563eb'],
+                        label: 'ค่า EA จริง (kcal/kg FFM)',
+                        data: [0, 0, 0, 0],
+                        backgroundColor: ['#fcd34d', '#ef4444', '#60a5fa', '#2563eb'],
                         borderRadius: 6
                     }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    plugins: {
-                        legend: { display: false },
-                        tooltip: {
-                            callbacks: {
-                                label: (context) => `EA: ${context.raw.toFixed(1)} kcal/kg FFM`
-                            }
-                        }
-                    },
-                    scales: {
-                        y: { 
-                            beginAtZero: true, 
-                            max: 50,
-                            title: { display: true, text: 'kcal / kg FFM / day' } 
-                        }
-                    }
+                    plugins: { legend: { display: false } },
+                    scales: { y: { beginAtZero: true, max: 50 } }
                 }
             });
         }
 
-        function calculate() {
-            const bw = parseFloat(weightInput.value);
-            const bf = parseFloat(bfInput.value);
-            const eee = parseFloat(eeeInput.value);
-            const targetEa = parseFloat(targetEaSelect.value);
+        function updateCharts(tdeeDeficit, eaRest, eaClimb, tdeeEaRestVal, tdeeEaClimbVal, targetEa) {
+            if (!intakeChartInstance || !eaZoneChartInstance) return;
 
-            // Update UI labels
-            weightVal.textContent = bw;
-            bfVal.textContent = bf;
-            eeeVal.textContent = eee;
-            targetEaVal.textContent = targetEa;
+            // Update Intake Chart
+            intakeChartInstance.data.datasets[0].data = [Math.round(tdeeDeficit), Math.round(tdeeDeficit)];
+            intakeChartInstance.data.datasets[1].data = [Math.round(eaRest), Math.round(eaClimb)];
+            intakeChartInstance.update();
 
-            // Calculations
-            const ffm = bw * (1 - (bf / 100));
-            const bmr = 370 + (21.6 * ffm);
-
-            // TDEE (Moderately active = 1.55)
-            const tdeeBase = bmr * 1.55;
-            const tdeeDeficitIntake = tdeeBase * 0.8; // -20%
-
-            // Actual EA under TDEE
-            const tdeeActualEaRest = (tdeeDeficitIntake - 0) / ffm;
-            const tdeeActualEaClimb = (tdeeDeficitIntake - eee) / ffm;
-
-            // EA Model Strategy
-            const eaBaseIntakeRest = targetEa * ffm;
-            const eaBaseIntakeClimb = (targetEa * ffm) + eee;
-
-            // Render Numerical Outputs
-            ffmDisplay.textContent = ffm.toFixed(1);
-            bmrDisplay.textContent = Math.round(bmr).toLocaleString();
-            tdeeDeficitDisplay.textContent = Math.round(tdeeDeficitIntake).toLocaleString();
-            eaTargetDisplay.textContent = `${Math.round(eaBaseIntakeRest).toLocaleString()} - ${Math.round(eaBaseIntakeClimb).toLocaleString()}`;
-
-            tdeeEaRest.textContent = `${tdeeActualEaRest.toFixed(1)} kcal`;
-            tdeeEaClimb.textContent = `${tdeeActualEaClimb.toFixed(1)} kcal (${tdeeActualEaClimb < 30 ? 'LEA!' : 'Safe'})`;
-            tdeeEaClimb.className = `font-bold ${tdeeActualEaClimb < 30 ? 'text-red-600' : 'text-emerald-600'}`;
-
-            eaRestIntake.textContent = `${Math.round(eaBaseIntakeRest).toLocaleString()} kcal`;
-            eaClimbIntake.textContent = `${Math.round(eaBaseIntakeClimb).toLocaleString()} kcal`;
-
-            // Dynamic Alert for LEA
-            if (tdeeActualEaClimb < 30) {
-                leaAlert.className = "p-4 rounded-xl bg-red-100 text-red-900 border border-red-200 text-xs flex items-start space-x-3";
-                leaAlertText.textContent = `หากรับประทานอาหารตามโมเดล TDEE (${Math.round(tdeeDeficitIntake)} kcal) ในวันปีนผา ค่า EA ของคุณจะลดลงเหลือเพียง ${tdeeActualEaClimb.toFixed(1)} kcal/kg FFM/day ซึ่งต่ำกว่าเกณฑ์ความปลอดภัย (<30 kcal) เสี่ยงต่อภาวะ LEA, การสลายกล้ามเนื้อ และ RMR ปรับลดลง!`;
-            } else {
-                leaAlert.className = "p-4 rounded-xl bg-emerald-100 text-emerald-900 border border-emerald-200 text-xs flex items-start space-x-3";
-                leaAlertText.textContent = `ค่า EA ในวันปีนผาตามวิธี TDEE อยู่ที่ ${tdeeActualEaClimb.toFixed(1)} kcal/kg FFM/day ซึ่งยังอยู่ในเกณฑ์ที่ยอมรับได้ แต่หากวันใดออกกำลังกายหนักขึ้น ค่า EA อาจตกเข้าสู่ภาวะ LEA ได้`;
-            }
-
-            // Macros Calculation
-            const restP = bw * 1.8;
-            const restF = (eaBaseIntakeRest * 0.25) / 9;
-            const restC = (eaBaseIntakeRest - (restP * 4) - (restF * 9)) / 4;
-
-            const climbP = bw * 2.0;
-            const climbF = (eaBaseIntakeClimb * 0.25) / 9;
-            const climbC = (eaBaseIntakeClimb - (climbP * 4) - (climbF * 9)) / 4;
-
-            macroRestP.textContent = `${Math.round(restP)}g (${Math.round(restP * 4)} kcal)`;
-            macroRestC.textContent = `${Math.round(restC)}g (${Math.round(restC * 4)} kcal)`;
-            macroRestF.textContent = `${Math.round(restF)}g (${Math.round(restF * 9)} kcal)`;
-
-            macroClimbP.textContent = `${Math.round(climbP)}g (${Math.round(climbP * 4)} kcal)`;
-            macroClimbC.textContent = `${Math.round(climbC)}g (${Math.round(climbC * 4)} kcal)`;
-            macroClimbF.textContent = `${Math.round(climbF)}g (${Math.round(climbF * 9)} kcal)`;
-
-            // Update Charts
-            if (intakeChart && eaZoneChart) {
-                intakeChart.data.datasets[0].data = [tdeeDeficitIntake, tdeeDeficitIntake, tdeeDeficitIntake];
-                intakeChart.data.datasets[1].data = [eaBaseIntakeRest, eaBaseIntakeClimb, eaBaseIntakeRest + eee + 150];
-                intakeChart.update();
-
-                eaZoneChart.data.datasets[0].data = [tdeeActualEaRest, tdeeActualEaClimb, targetEa];
-                eaZoneChart.update();
-            }
+            // Update EA Zone Chart
+            eaZoneChartInstance.data.datasets[0].data = [
+                tdeeEaRestVal.toFixed(1),
+                tdeeEaClimbVal.toFixed(1),
+                targetEa,
+                targetEa
+            ];
+            eaZoneChartInstance.update();
         }
 
-        function calculateRealisticEee() {
-            const activeMin = parseFloat(activeWallMin.value) || 0;
-            const realisticEee = activeMin * 11; // ~11 kcal/min on wall
-            realisticEeeDisplay.textContent = `${Math.round(realisticEee)} kcal`;
+        // Select EA Level Interactive Panel Switcher
+        function selectEaLevel(index) {
+            const data = eaLevelsData[index];
+            if (!data) return;
+
+            // Reset all button styles
+            for (let i = 0; i < 4; i++) {
+                const btn = document.getElementById(`eaBtn-${i}`);
+                const badge = document.getElementById(`eaBadge-${i}`);
+                if (btn) btn.classList.remove('ring-2', 'ring-amber-500', 'ring-blue-500', 'ring-emerald-500', 'ring-red-500', 'shadow-md');
+                if (badge) {
+                    badge.textContent = "คลิกเพื่อดู";
+                    badge.className = "text-[10px] bg-slate-200 text-slate-700 px-2 py-0.5 rounded-full font-bold";
+                }
+            }
+
+            // Set active button style
+            const activeBtn = document.getElementById(`eaBtn-${index}`);
+            const activeBadge = document.getElementById(`eaBadge-${index}`);
+            if (activeBtn) activeBtn.classList.add('ring-2', 'ring-amber-500', 'shadow-md');
+            if (activeBadge) {
+                activeBadge.textContent = "กำลังเลือกอยู่";
+                activeBadge.className = "text-[10px] bg-amber-500 text-white px-2 py-0.5 rounded-full font-bold";
+            }
+
+            // Update Inspection Panel
+            document.getElementById('detailIcon').textContent = data.icon;
+            document.getElementById('detailRange').textContent = data.range;
+            document.getElementById('detailTitle').textContent = data.title;
+            
+            const tagEl = document.getElementById('detailStatusTag');
+            tagEl.textContent = data.statusTag;
+            tagEl.className = `px-3 py-1 text-xs font-bold rounded-full border ${data.statusClass}`;
+
+            document.getElementById('eaDetailPanel').className = `${data.panelClass} border rounded-xl p-6 transition-all duration-300 shadow-sm`;
+
+            document.getElementById('detailRmr').textContent = data.rmr;
+            document.getElementById('detailHormone').textContent = data.hormone;
+            document.getElementById('detailMuscle').textContent = data.muscle;
+            document.getElementById('detailAdvice').textContent = data.advice;
         }
 
         // Event Listeners
         [weightInput, bfInput, eeeInput, targetEaSelect].forEach(element => {
             element.addEventListener('input', calculate);
+            element.addEventListener('change', calculate);
         });
 
         [totalSessionMin, activeWallMin].forEach(element => {
-            element.addEventListener('input', calculateRealisticEee);
+            element.addEventListener('input', calculateWallTime);
         });
 
-        // Initialize on Load
-        document.addEventListener('DOMContentLoaded', () => {
+        // Initialize on load
+        window.addEventListener('DOMContentLoaded', () => {
             initCharts();
             calculate();
-            calculateRealisticEee();
-            selectEaLevel(2); // Default to Sweet spot
+            calculateWallTime();
+            selectEaLevel(2); // Default selected level: Moderate Deficit
         });
     </script>
 </body>
