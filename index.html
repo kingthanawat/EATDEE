@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KINGEA - TDEE vs Energy Availability (EA) Dashboard</title>
+    <title>KINGEA - Climbing Energy & Calorie Planner</title>
 
     <!-- iOS / PWA Web App Meta Tags -->
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -46,180 +46,232 @@
             <div class="flex items-center space-x-3">
                 <span class="text-3xl">🧗‍♂️</span>
                 <div>
-                    <h1 class="text-xl font-bold text-slate-900">TDEE vs EA Dashboard สำหรับนักปีนผาออฟฟิศ</h1>
-                    <p class="text-xs text-slate-500">รายงานวิเคราะห์และเครื่องมือคำนวณการจัดสรรพลังงานเพื่อการลดไขมันอย่างปลอดภัย</p>
+                    <h1 class="text-xl font-bold text-slate-900">KINGEA Planner สำหรับนักปีนผา</h1>
+                    <p class="text-xs text-slate-500">คำนวณแคลอรีวันพักและวันปีนผา ป้องกันการสลายกล้ามเนื้อและระบบเผาผลาญพัง</p>
                 </div>
             </div>
             <nav class="flex space-x-2 sm:space-x-4 text-sm font-medium text-slate-600 overflow-x-auto w-full md:w-auto">
-                <a href="#calculator" class="hover:text-blue-600 px-3 py-2 rounded-lg hover:bg-slate-100 transition whitespace-nowrap">🧮 เครื่องมือคำนวณ</a>
-                <a href="#comparisons" class="hover:text-blue-600 px-3 py-2 rounded-lg hover:bg-slate-100 transition whitespace-nowrap">📊 เปรียบเทียบโมเดล</a>
-                <a href="#physiology" class="hover:text-blue-600 px-3 py-2 rounded-lg hover:bg-slate-100 transition whitespace-nowrap">🧠 สรีรวิทยา & LEA</a>
-                <a href="#walltime" class="hover:text-blue-600 px-3 py-2 rounded-lg hover:bg-slate-100 transition whitespace-nowrap">⏱️ คำนวณพลังงานปีนผาจริง</a>
+                <a href="#step1-climbing" class="hover:text-blue-600 px-3 py-2 rounded-lg hover:bg-slate-100 transition whitespace-nowrap">1️⃣ พลังงานปีนผา</a>
+                <a href="#step2-profile" class="hover:text-blue-600 px-3 py-2 rounded-lg hover:bg-slate-100 transition whitespace-nowrap">2️⃣ สรีระ & เป้าหมาย</a>
+                <a href="#step3-results" class="hover:text-blue-600 px-3 py-2 rounded-lg hover:bg-slate-100 transition whitespace-nowrap">3️⃣ สรุปปริมาณอาหาร</a>
+                <a href="#comparisons" class="hover:text-blue-600 px-3 py-2 rounded-lg hover:bg-slate-100 transition whitespace-nowrap">📊 กราฟวิเคราะห์</a>
             </nav>
         </div>
     </header>
 
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12">
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-10">
 
-        <!-- Executive Context Section -->
-        <section class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-slate-200/80">
-            <div class="max-w-3xl">
-                <span class="inline-block px-3 py-1 bg-blue-100 text-blue-800 text-xs font-semibold rounded-full mb-3">บริบททางสรีรวิทยา</span>
-                <h2 class="text-2xl font-bold text-slate-900 mb-4">ทำไมพนักงานออฟฟิศที่ปีนผาจึงคำนวณแคลอรีพลาดได้ง่าย?</h2>
-                <p class="text-slate-600 mb-4">
-                    พนักงานออฟฟิศมักมีกิจกรรมประจำวันที่นิ่งสงบ (Low NEAT) แต่เมื่อเล่นกีฬาปีนผาบลเดอร์ (Bouldering) ร่างกายจะเปลี่ยนไปสู่การใช้พลังงานความเข้มข้นสูงแบบเกร็งค้าง (Isometric Contractions) 
-                    การลดน้ำหนักเพื่อเพิ่มอัตราส่วน <strong class="text-slate-800">Strength-to-Weight Ratio</strong> มักใช้วิธีตัดแคลอรีจากค่า TDEE แบบคงที่ ซึ่งอาจนำไปสู่ภาวะพลังงานจำกัดส่งผลเสีย (<span class="text-red-600 font-semibold">Low Energy Availability: LEA</span>) ในวันซ้อมหนักโดยไม่รู้ตัว
-                </p>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6 pt-6 border-t border-slate-100">
-                    <div class="p-4 bg-slate-50 rounded-xl">
-                        <div class="font-bold text-slate-800 mb-1">⚖️ โมเดล TDEE (Energy Balance)</div>
-                        <p class="text-xs text-slate-500">มองร่างกายเป็นระบบปิด คำนวณพลังงานรวมต่อวันโดยใช้น้ำหนักตัวรวม มักกำหนดให้กินเท่ากันทุกวัน</p>
+        <!-- STEP 1: Climbing Energy Expenditure (EEE) -->
+        <section id="step1-climbing" class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-amber-200 space-y-6">
+            <div class="flex items-center space-x-3 border-b border-slate-100 pb-4">
+                <span class="flex items-center justify-center w-8 h-8 rounded-full bg-amber-500 text-white font-extrabold text-sm">1</span>
+                <div>
+                    <h2 class="text-xl font-bold text-slate-900">คำนวณพลังงานที่คาดว่าจะใช้ในการปีนผา (Climbing EEE)</h2>
+                    <p class="text-xs text-slate-500">ประเมินแคลอรีที่เผาผลาญจากการเล่นเพื่อนำไปเติมชดเชยในวันปีน</p>
+                </div>
+            </div>
+
+            <!-- Presets Section -->
+            <div class="space-y-3">
+                <label class="block text-xs font-bold uppercase text-slate-500 tracking-wider">⚡ เลือกรูปแบบการซ้อมด่วน (Quick Presets)</label>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <button type="button" onclick="setEeePreset(180)" class="p-4 rounded-xl border border-slate-200 bg-slate-50 hover:bg-amber-50 hover:border-amber-300 text-left transition cursor-pointer">
+                        <div class="font-bold text-sm text-slate-800">🧗‍♀️ ซ้อมบลเดอร์ชิลๆ</div>
+                        <div class="text-xs text-slate-500 mt-1">1.5 - 2 ชม. (โหนจริง ~15 นาที)</div>
+                        <div class="text-amber-600 font-extrabold text-base mt-2">~180 kcal</div>
+                    </button>
+                    <button type="button" onclick="setEeePreset(300)" class="p-4 rounded-xl border border-slate-200 bg-slate-50 hover:bg-amber-50 hover:border-amber-300 text-left transition cursor-pointer">
+                        <div class="font-bold text-sm text-slate-800">🔥 Projecting ยิมหนักหน่วง</div>
+                        <div class="text-xs text-slate-500 mt-1">2 - 2.5 ชม. (โหนจริง ~25-30 นาที)</div>
+                        <div class="text-amber-600 font-extrabold text-base mt-2">~300 kcal</div>
+                    </button>
+                    <button type="button" onclick="setEeePreset(450)" class="p-4 rounded-xl border border-slate-200 bg-slate-50 hover:bg-amber-50 hover:border-amber-300 text-left transition cursor-pointer">
+                        <div class="font-bold text-sm text-slate-800">🧗‍♂️ Lead / Endurance หนักมาก</div>
+                        <div class="text-xs text-slate-500 mt-1">3 ชม.+ (โหนจริง ~40-45 นาที)</div>
+                        <div class="text-amber-600 font-extrabold text-base mt-2">~450 kcal</div>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Custom Active Wall Time Calculator -->
+            <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 space-y-4">
+                <div class="text-xs font-bold text-slate-700">⏱️ หรือคำนวณจากเวลาปีนจริงบนผนัง (Active Wall Time Calculator)</div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+                    <div>
+                        <label class="block text-slate-600 mb-1">เวลารวมในยิม (นาที):</label>
+                        <input type="number" id="totalSessionMin" value="120" min="15" max="300" class="w-full p-2.5 bg-white border border-slate-300 rounded-lg font-semibold focus:ring-2 focus:ring-amber-500 focus:outline-none">
                     </div>
-                    <div class="p-4 bg-blue-50/50 rounded-xl border border-blue-100">
-                        <div class="font-bold text-blue-900 mb-1">🛡️ โมเดล EA (Energy Availability)</div>
-                        <p class="text-xs text-slate-600">ประเมินพลังงานที่เหลือให้ระบบอวัยวะและมวลปลอดไขมัน (FFM) หลังจากหักลบพลังงานออกกำลังกาย (EEE) ช่วยป้องกันระบบเผาผลาญพัง</p>
+                    <div>
+                        <label class="block text-slate-600 mb-1">เวลาเท้าพ้นพื้นปีนจริง (Active Min):</label>
+                        <input type="number" id="activeWallMin" value="25" min="1" max="120" class="w-full p-2.5 bg-white border border-amber-300 rounded-lg font-bold text-amber-700 focus:ring-2 focus:ring-amber-500 focus:outline-none">
+                    </div>
+                    <div class="flex items-end">
+                        <button type="button" onclick="applyWallTimeEee()" class="w-full py-2.5 px-4 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-lg transition shadow-xs cursor-pointer">
+                            ใช้ค่าที่คำนวณนี้ ( <span id="wallTimeEeeResult">275</span> kcal )
+                        </button>
                     </div>
                 </div>
             </div>
+
+            <!-- Active EEE Display Slider -->
+            <div class="pt-2">
+                <div class="flex justify-between items-center mb-1">
+                    <label class="text-xs font-bold text-slate-700">พลังงานปีนผาที่จะนำไปใช้วิเคราะห์ (EEE Selected):</label>
+                    <span class="text-lg font-extrabold text-amber-600"><span id="eeeVal">300</span> kcal</span>
+                </div>
+                <input type="range" id="eee" min="100" max="700" value="300" step="10" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-amber-600">
+            </div>
         </section>
 
-        <!-- Interactive Calculator Section -->
-        <section id="calculator" class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-slate-200 space-y-6">
-            <div>
-                <span class="inline-block px-3 py-1 bg-emerald-100 text-emerald-800 text-xs font-semibold rounded-full mb-2">Interactive Tool</span>
-                <h2 class="text-2xl font-bold text-slate-900">เครื่องมือคำนวณและเปรียบเทียบแคลอรีส่วนบุคคล (TDEE vs EA)</h2>
-                <p class="text-sm text-slate-500 mt-1">ป้อนข้อมูลกายเมตริกและกิจกรรมของคุณ เพื่อดูการเปรียบเทียบการจัดสรรพลังงาน สารอาหาร และความเสี่ยง LEA</p>
+
+        <!-- STEP 2: Body Metrics & Goal Selection -->
+        <section id="step2-profile" class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-blue-200 space-y-6">
+            <div class="flex items-center space-x-3 border-b border-slate-100 pb-4">
+                <span class="flex items-center justify-center w-8 h-8 rounded-full bg-blue-600 text-white font-extrabold text-sm">2</span>
+                <div>
+                    <h2 class="text-xl font-bold text-slate-900">กำหนดข้อมูลสรีระและเลือกเป้าหมายการกิน</h2>
+                    <p class="text-xs text-slate-500">ป้อนค่าน้ำหนัก %ไขมัน และเลือกเป้าหมายเพื่อคำนวณพลังงานที่เหมาะสม</p>
+                </div>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                <!-- Input Controls -->
-                <div class="lg:col-span-5 bg-slate-50 p-6 rounded-xl border border-slate-200 space-y-4">
-                    <h3 class="font-bold text-slate-800 text-base mb-4 flex items-center">
-                        <span class="mr-2">⚙️</span> กำหนดค่าสรีระและกิจกรรม
-                    </h3>
-
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Body Metrics Sliders -->
+                <div class="space-y-4 bg-slate-50 p-5 rounded-xl border border-slate-200">
+                    <h3 class="text-xs font-bold text-slate-700 uppercase tracking-wider">👤 ข้อมูลกายเมตริก</h3>
                     <div>
-                        <label class="block text-xs font-semibold text-slate-700 mb-1">น้ำหนักตัว (kg): <span id="weightVal" class="text-blue-600 font-bold">75</span> kg</label>
-                        <input type="range" id="weight" min="50" max="110" value="75" step="0.5" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-blue-600">
+                        <div class="flex justify-between text-xs font-semibold mb-1">
+                            <span>น้ำหนักตัว (kg):</span>
+                            <span id="weightVal" class="text-blue-600 font-bold">75 kg</span>
+                        </div>
+                        <input type="range" id="weight" min="45" max="110" value="75" step="0.5" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-blue-600">
                     </div>
 
                     <div>
-                        <label class="block text-xs font-semibold text-slate-700 mb-1">เปอร์เซ็นต์ไขมัน Body Fat (%): <span id="bfVal" class="text-blue-600 font-bold">18</span>%</label>
+                        <div class="flex justify-between text-xs font-semibold mb-1">
+                            <span>เปอร์เซ็นต์ไขมัน Body Fat (%):</span>
+                            <span id="bfVal" class="text-blue-600 font-bold">18%</span>
+                        </div>
                         <input type="range" id="bf" min="5" max="35" value="18" step="0.5" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-blue-600">
                     </div>
 
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-700 mb-1">พลังงานปีนผาโดยประมาณ (EEE - kcal): <span id="eeeVal" class="text-amber-600 font-bold">300</span> kcal</label>
-                        <input type="range" id="eee" min="100" max="700" value="300" step="10" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-amber-600">
-                    </div>
-
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-700 mb-1">เป้าหมาย EA สำหรับลดไขมัน (kcal/kg FFM):</label>
-                        <select id="targetEa" class="w-full text-xs p-2.5 bg-white border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
-                            <option value="35" selected>35 - Fat Loss Sweet Spot (แนะนำสำหรับการลดไขมันปลอดภัย)</option>
-                            <option value="32">32 - Moderate Deficit (ลดไขมันไวขึ้น)</option>
-                            <option value="30">30 - Minimum Safety Floor (เกณฑ์ต่ำสุดที่ปลอดภัย)</option>
-                            <option value="45">45 - Optimal EA (รักษาน้ำหนัก/เพิ่มกล้ามเนื้อ)</option>
-                        </select>
-                    </div>
-
-                    <div class="pt-4 border-t border-slate-200">
-                        <div class="text-xs text-slate-500 space-y-1">
-                            <div>• มวลปลอดไขมัน (FFM): <span id="ffmDisplay" class="font-bold text-slate-800">61.5</span> kg</div>
-                            <div>• BMR (Katch-McArdle): <span id="bmrDisplay" class="font-bold text-slate-800">1,698</span> kcal</div>
-                        </div>
+                    <div class="pt-3 border-t border-slate-200 text-xs text-slate-500 space-y-1">
+                        <div class="flex justify-between"><span>มวลปลอดไขมัน (FFM):</span> <strong text-slate-800 id="ffmDisplay">61.5 kg</strong></div>
+                        <div class="flex justify-between"><span>อัตราเผาผลาญพื้นฐาน (BMR):</span> <strong text-slate-800 id="bmrDisplay">1,698 kcal</strong></div>
                     </div>
                 </div>
 
-                <!-- Live Results Comparison -->
-                <div class="lg:col-span-7 space-y-6">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <!-- TDEE Deficit Card -->
-                        <div class="p-5 bg-amber-50/50 rounded-xl border border-amber-200 flex flex-col justify-between">
-                            <div>
-                                <div class="flex justify-between items-start mb-2">
-                                    <span class="text-xs font-bold text-amber-800 bg-amber-100 px-2.5 py-0.5 rounded">โมเดล TDEE (-20%)</span>
-                                    <span class="text-xs text-slate-500">กินเท่ากันทุกวัน</span>
-                                </div>
-                                <div class="text-2xl font-extrabold text-slate-900 my-2" id="tdeeDeficitDisplay">2,106 <span class="text-xs font-normal text-slate-500">kcal/วัน</span></div>
-                                <p class="text-xs text-slate-600">คำนวณจากการคูณ Activity Multiplier (1.55) แล้วหักลด 20%</p>
-                            </div>
-                            <div class="mt-4 pt-3 border-t border-amber-200/60 text-xs">
-                                <div class="flex justify-between py-0.5">
-                                    <span class="text-slate-600">ค่า EA ในวันพัก:</span>
-                                    <span class="font-bold text-slate-800" id="tdeeEaRest">34.2 kcal</span>
-                                </div>
-                                <div class="flex justify-between py-0.5">
-                                    <span class="text-slate-600">ค่า EA ในวันปีนผา:</span>
-                                    <span class="font-bold text-red-600" id="tdeeEaClimb">29.3 kcal (LEA!)</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- EA Strategy Card -->
-                        <div class="p-5 bg-blue-50/50 rounded-xl border border-blue-200 flex flex-col justify-between">
-                            <div>
-                                <div class="flex justify-between items-start mb-2">
-                                    <span class="text-xs font-bold text-blue-800 bg-blue-100 px-2.5 py-0.5 rounded">โมเดล EA Strategy</span>
-                                    <span class="text-xs text-slate-500">ยืดหยุ่นตามกิจกรรม</span>
-                                </div>
-                                <div class="text-2xl font-extrabold text-blue-900 my-2" id="eaTargetDisplay">2,153 - 2,453 <span class="text-xs font-normal text-slate-500">kcal</span></div>
-                                <p class="text-xs text-slate-600">ปรับเปลี่ยนตาม EEE ของวันเพื่อให้คงระดับ EA อยู่ที่เป้าหมายเสมอ</p>
-                            </div>
-                            <div class="mt-4 pt-3 border-t border-blue-200/60 text-xs">
-                                <div class="flex justify-between py-0.5">
-                                    <span class="text-slate-600">วันพัก (EEE = 0):</span>
-                                    <span class="font-bold text-slate-800" id="eaRestIntake">2,153 kcal</span>
-                                </div>
-                                <div class="flex justify-between py-0.5">
-                                    <span class="text-slate-600">วันปีนผา (+EEE):</span>
-                                    <span class="font-bold text-blue-700" id="eaClimbIntake">2,453 kcal</span>
-                                </div>
-                            </div>
-                        </div>
+                <!-- Goal Selector -->
+                <div class="space-y-4 bg-slate-50 p-5 rounded-xl border border-slate-200 flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">🎯 เลือกเป้าหมายทางกายภาพ</h3>
+                        <label class="block text-xs text-slate-600 mb-2">คุณต้องการผลลัพธ์แบบใดในการปีนผา?</label>
+                        <select id="goalSelect" class="w-full p-3 bg-white border border-slate-300 rounded-xl font-bold text-sm text-slate-800 focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                            <option value="cut" selected>✂️ Cut / ลดไขมัน (Fat Loss Sweet Spot - EA 33)</option>
+                            <option value="maintain">⚖️ Maintain / รักษาน้ำหนัก & ฟื้นฟูดีเยี่ยม (EA 45)</option>
+                            <option value="muscle">💪 Build Muscle / เพิ่มกล้ามเนื้อ & พาวเวอร์ (EA 48)</option>
+                        </select>
                     </div>
 
-                    <!-- LEA Status Warning Dynamic Alert -->
-                    <div id="leaAlert" class="p-4 rounded-xl bg-red-100 text-red-900 border border-red-200 text-xs flex items-start space-x-3">
-                        <span class="text-xl">⚠️</span>
-                        <div>
-                            <div class="font-bold text-sm mb-0.5" id="leaAlertTitle">คำเตือน: ความเสี่ยงภาวะ LEA จากโมเดล TDEE</div>
-                            <p id="leaAlertText">หากรับประทานอาหารตามโมเดล TDEE ในวันปีนผา ค่า EA ของคุณจะลดลงเหลือเพียง 29.3 kcal/kg FFM/day ซึ่งต่ำกว่าเกณฑ์ความปลอดภัย (&lt;30 kcal) เสี่ยงต่อการสลายกล้ามเนื้อและอัตราเผาผลาญ RMR ลดลง</p>
-                        </div>
-                    </div>
-
-                    <!-- Recommended Macro Distribution Table -->
-                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
-                        <h4 class="font-bold text-xs text-slate-700 mb-3 uppercase tracking-wider">💡 การจัดสรรสารอาหารหลักตามกลยุทธ์ EA (Macronutrient Breakdown)</h4>
-                        <div class="grid grid-cols-2 gap-4 text-xs">
-                            <div class="p-3 bg-white rounded-lg border border-slate-200">
-                                <div class="font-bold text-slate-800 mb-1">วันพัก (Rest Day)</div>
-                                <div class="space-y-1 text-slate-600">
-                                    <div class="flex justify-between"><span>โปรตีน (1.8g/kg):</span><strong class="text-slate-800" id="macroRestP">135g</strong></div>
-                                    <div class="flex justify-between"><span>คาร์โบไฮเดรต:</span><strong class="text-slate-800" id="macroRestC">223g</strong></div>
-                                    <div class="flex justify-between"><span>ไขมัน (25%):</span><strong class="text-slate-800" id="macroRestF">60g</strong></div>
-                                </div>
-                            </div>
-                            <div class="p-3 bg-white rounded-lg border border-blue-100">
-                                <div class="font-bold text-blue-900 mb-1">วันปีนผา (Climbing Day)</div>
-                                <div class="space-y-1 text-slate-600">
-                                    <div class="flex justify-between"><span>โปรตีน (2.0g/kg):</span><strong class="text-blue-900" id="macroClimbP">150g</strong></div>
-                                    <div class="flex justify-between"><span>คาร์โบไฮเดรต (+EEE):</span><strong class="text-blue-900" id="macroClimbC">288g</strong></div>
-                                    <div class="flex justify-between"><span>ไขมัน (25%):</span><strong class="text-blue-900" id="macroClimbF">68g</strong></div>
-                                </div>
-                            </div>
-                        </div>
+                    <div id="goalDescription" class="p-4 bg-blue-50/80 border border-blue-200 rounded-lg text-xs text-blue-900 leading-relaxed mt-4">
+                        <strong>คำแนะนำช่วงลดไขมัน:</strong> แอพกำหนด EA ไว้ที่ 33 kcal/kg FFM ซึ่งเป็นจุดที่ดึงไขมันสะสมออกมาใช้ได้มากที่สุด โดยไม่ทำให้ฮอร์โมนไทรอยด์ตก และรักษามวลกล้ามเนื้อไว้ได้ครบถ้วน
                     </div>
                 </div>
             </div>
         </section>
+
+
+        <!-- STEP 3: Recommended Daily Intake Results -->
+        <section id="step3-results" class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-emerald-200 space-y-6">
+            <div class="flex items-center space-x-3 border-b border-slate-100 pb-4">
+                <span class="flex items-center justify-center w-8 h-8 rounded-full bg-emerald-600 text-white font-extrabold text-sm">3</span>
+                <div>
+                    <h2 class="text-xl font-bold text-slate-900">สรุปปริมาณแคลอรีและสารอาหารที่ต้องกินจริงต่อวัน</h2>
+                    <p class="text-xs text-slate-500">ยืดหยุ่นตามกิจกรรม เพื่อให้คงระดับ EA ที่ปลอดภัยไว้เสมอ</p>
+                </div>
+            </div>
+
+            <!-- Rest Day vs Climbing Day Calorie Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Rest Day Card -->
+                <div class="p-6 bg-slate-50 rounded-2xl border border-slate-200 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 bg-slate-200 text-slate-700 text-[10px] font-bold px-3 py-1 rounded-bl-lg uppercase">Rest Day</div>
+                    <div class="text-sm font-bold text-slate-700 mb-1">💤 วันพักผ่อน (Rest Day Target)</div>
+                    <div class="text-4xl font-black text-slate-900 my-3" id="restTotalCal">2,030 <span class="text-sm font-normal text-slate-500">kcal/วัน</span></div>
+                    <p class="text-xs text-slate-500 border-b border-slate-200 pb-3 mb-3">คำนวณจากเป้าหมาย EA สำหรับมวลปลอดไขมัน (FFM) โดยไม่มีพลังงานปีนผา</p>
+
+                    <div class="space-y-2 text-xs">
+                        <div class="font-bold text-slate-700 mb-1">💡 สารอาหารหลักที่แนะนำ (Rest Day Macros):</div>
+                        <div class="flex justify-between p-2 bg-white rounded-lg border border-slate-200">
+                            <span>🥩 โปรตีน (1.8g/kg):</span>
+                            <strong class="text-slate-900" id="restMacroP">135g</strong>
+                        </div>
+                        <div class="flex justify-between p-2 bg-white rounded-lg border border-slate-200">
+                            <span>🍚 คาร์โบไฮเดรต:</span>
+                            <strong class="text-slate-900" id="restMacroC">200g</strong>
+                        </div>
+                        <div class="flex justify-between p-2 bg-white rounded-lg border border-slate-200">
+                            <span>🥑 ไขมันดี (25%):</span>
+                            <strong class="text-slate-900" id="restMacroF">56g</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Climbing Day Card -->
+                <div class="p-6 bg-amber-50/60 rounded-2xl border border-amber-200 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 bg-amber-500 text-white text-[10px] font-bold px-3 py-1 rounded-bl-lg uppercase">Climbing Day</div>
+                    <div class="text-sm font-bold text-amber-900 mb-1">🧗‍♂️ วันปีนผา (Climbing Day Target)</div>
+                    <div class="text-4xl font-black text-amber-600 my-3" id="climbTotalCal">2,330 <span class="text-sm font-normal text-amber-800/60">kcal/วัน</span></div>
+                    <p class="text-xs text-slate-600 border-b border-amber-200 pb-3 mb-3">รวมพลังงานวันพัก + เติมพลังงานปีนผาชดเชย (<span id="climbEeeAdded">300</span> kcal) เข้าไปในคาร์โบไฮเดรต</p>
+
+                    <div class="space-y-2 text-xs">
+                        <div class="font-bold text-slate-700 mb-1">💡 สารอาหารหลักที่แนะนำ (Climbing Day Macros):</div>
+                        <div class="flex justify-between p-2 bg-white rounded-lg border border-amber-100">
+                            <span>🥩 โปรตีน (2.0g/kg):</span>
+                            <strong class="text-amber-900" id="climbMacroP">150g</strong>
+                        </div>
+                        <div class="flex justify-between p-2 bg-white rounded-lg border border-amber-100">
+                            <span>🍚 คาร์โบไฮเดรต (+EEE):</span>
+                            <strong class="text-amber-900" id="climbMacroC">265g</strong>
+                        </div>
+                        <div class="flex justify-between p-2 bg-white rounded-lg border border-amber-100">
+                            <span>🥑 ไขมันดี (25%):</span>
+                            <strong class="text-amber-900" id="climbMacroF">64g</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TDEE Comparison & LEA Warning Section -->
+            <div class="p-5 bg-slate-50 rounded-xl border border-slate-200 space-y-4">
+                <div class="flex justify-between items-center text-xs border-b border-slate-200 pb-3">
+                    <div>
+                        <span class="font-bold text-slate-800">เปรียบเทียบกับวิธี TDEE -20% แบบเดิม:</span>
+                        <span class="text-slate-500 block">วิธีกินแคลอรีเท่ากันทุกวัน (กินที่ <strong text-slate-700 id="tdeeFixedVal">2,106</strong> kcal/วัน)</span>
+                    </div>
+                    <div class="text-right">
+                        <div class="text-xs font-bold text-slate-600">EA วันพัก: <span id="tdeeEaRestVal" class="text-slate-800">34.2</span></div>
+                        <div class="text-xs font-bold">EA วันปีนผา: <span id="tdeeEaClimbVal" class="text-red-600">29.3 (LEA!)</span></div>
+                    </div>
+                </div>
+
+                <!-- Dynamic LEA Danger Warning Alert -->
+                <div id="leaAlert" class="p-4 rounded-xl bg-red-100 text-red-900 border border-red-200 text-xs flex items-start space-x-3">
+                    <span class="text-xl">⚠️</span>
+                    <div>
+                        <div class="font-bold text-sm mb-0.5" id="leaAlertTitle">คำเตือนภาวะ LEA จากการกินตาม TDEE แบบคงที่</div>
+                        <p id="leaAlertText">หากกินแคลอรีเท่ากันทุกวัน ในวันปีนผาค่า EA ของคุณจะตกลงเหลือเพียง 29.3 kcal/kg FFM ซึ่งต่ำกว่าเกณฑ์ความปลอดภัย (&lt;30 kcal) เสี่ยงต่อการสลายกล้ามเนื้อและอัตราเผาผลาญลดลง แนะนำให้กินเพิ่มตามกลยุทธ์ EA ในวันซ้อม</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
 
         <!-- Comparative Visualizations Section -->
         <section id="comparisons" class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-slate-200 space-y-6">
             <div>
                 <span class="inline-block px-3 py-1 bg-purple-100 text-purple-800 text-xs font-semibold rounded-full mb-2">Visual Analysis</span>
                 <h2 class="text-2xl font-bold text-slate-900">การวิเคราะห์เปรียบเทียบเชิงภาพ (Visual Charts)</h2>
-                <p class="text-sm text-slate-500 mt-1">เปรียบเทียบปริมาณพลังงานที่ได้รับจริงและระดับ Energy Availability ที่เกิดขึ้นในแต่ละประเภทวัน</p>
+                <p class="text-sm text-slate-500 mt-1">เปรียบเทียบปริมาณพลังงานที่ได้รับจริงและระดับ Energy Availability ที่เกิดขึ้นในแต่ละวัน</p>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
@@ -238,196 +290,55 @@
                     <div class="chart-container">
                         <canvas id="eaZoneChart"></canvas>
                     </div>
-                    <p class="text-xs text-slate-500 text-center mt-3">เส้นประสีแดง (&lt;30 kcal) คือโซนอันตราย (LEA) ซึ่งโมเดล TDEE มักตกลงไปในวันปีนผาหนัก</p>
+                    <p class="text-xs text-slate-500 text-center mt-3">เส้นสีแดง (&lt;30 kcal) คือโซนอันตราย (LEA) ซึ่งโมเดล TDEE มักตกลงไปในวันปีนผาหนัก</p>
                 </div>
             </div>
         </section>
 
-        <!-- Physiological Impact Section -->
+        <!-- Physiological Reference Section -->
         <section id="physiology" class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-slate-200 space-y-6">
             <div>
-                <span class="inline-block px-3 py-1 bg-red-100 text-red-800 text-xs font-semibold rounded-full mb-2">Physiological Mechanisms</span>
-                <h2 class="text-2xl font-bold text-slate-900">เกณฑ์ระดับ EA และผลกระทบต่อสรีรวิทยาและเมแทบอลิซึม</h2>
-                <p class="text-sm text-slate-500 mt-1">คลิกที่การ์ดเกณฑ์ EA แต่ละช่วงด้านล่างเพื่อดูรายละเอียดประโยชน์ การทำงานของฮอร์โมน และคำแนะนำในการคงสภาวะพลังงาน</p>
+                <span class="inline-block px-3 py-1 bg-red-100 text-red-800 text-xs font-semibold rounded-full mb-2">Physiological Reference</span>
+                <h2 class="text-2xl font-bold text-slate-900">เกณฑ์ระดับ EA และผลกระทบต่อสรีรวิทยา</h2>
+                <p class="text-sm text-slate-500 mt-1">คลิกการ์ดระดับ EA ด้านล่างเพื่อดูผลกระทบต่อระบบเผาผลาญและฮอร์โมน</p>
             </div>
 
-            <!-- Clickable EA Criteria Cards -->
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-                <button type="button" onclick="selectEaLevel(0)" id="eaBtn-0" class="ea-card-btn text-left p-5 rounded-xl border border-blue-200 bg-blue-50/30 space-y-2 focus:outline-none cursor-pointer hover:border-blue-400">
-                    <div class="flex justify-between items-center">
-                        <span class="text-xs font-bold text-blue-800 uppercase tracking-wider">≥ 45 kcal/kg FFM</span>
-                        <span id="eaBadge-0" class="text-[10px] bg-blue-200 text-blue-900 px-2 py-0.5 rounded-full font-bold">คลิกเพื่อดู</span>
-                    </div>
-                    <div class="font-bold text-slate-900 text-base">Optimal EA</div>
-                    <p class="text-xs text-slate-600">ระบบต่อมไร้ท่อและ RMR สมบูรณ์ มวลกระดูกแข็งแรง ไม่เกิดการลดไขมัน</p>
-                    <span class="inline-block text-[11px] font-semibold text-blue-700 bg-blue-100 px-2 py-0.5 rounded">รักษาน้ำหนัก / เพิ่มกล้าม</span>
+                <button type="button" onclick="selectEaLevel(0)" id="eaBtn-0" class="ea-card-btn text-left p-4 rounded-xl border border-blue-200 bg-blue-50/30 cursor-pointer">
+                    <div class="text-xs font-bold text-blue-800 uppercase">≥ 45 kcal/kg FFM</div>
+                    <div class="font-bold text-slate-900 text-sm mt-1">Optimal EA</div>
+                    <p class="text-[11px] text-slate-500 mt-1">ระบบเผาผลาญสมบูรณ์ 100% เพิ่มกล้ามเนื้อได้ดี</p>
                 </button>
 
-                <button type="button" onclick="selectEaLevel(1)" id="eaBtn-1" class="ea-card-btn text-left p-5 rounded-xl border border-emerald-200 bg-emerald-50/30 space-y-2 focus:outline-none cursor-pointer hover:border-emerald-400">
-                    <div class="flex justify-between items-center">
-                        <span class="text-xs font-bold text-emerald-800 uppercase tracking-wider">35 - 44 kcal/kg FFM</span>
-                        <span id="eaBadge-1" class="text-[10px] bg-emerald-200 text-emerald-900 px-2 py-0.5 rounded-full font-bold">คลิกเพื่อดู</span>
-                    </div>
-                    <div class="font-bold text-slate-900 text-base">Mild Deficit</div>
-                    <p class="text-xs text-slate-600">การฟื้นฟูดีเยี่ยม ไม่กระทบต่อระบบฮอร์โมน ลดไขมันช้าๆ อย่างปลอดภัยที่สุด</p>
-                    <span class="inline-block text-[11px] font-semibold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded">ลดไขมันช้าปลอดภัย</span>
+                <button type="button" onclick="selectEaLevel(1)" id="eaBtn-1" class="ea-card-btn text-left p-4 rounded-xl border border-emerald-200 bg-emerald-50/30 cursor-pointer">
+                    <div class="text-xs font-bold text-emerald-800 uppercase">35 - 44 kcal/kg FFM</div>
+                    <div class="font-bold text-slate-900 text-sm mt-1">Mild Deficit</div>
+                    <p class="text-[11px] text-slate-500 mt-1">ลดไขมันช้าๆ ปลอดภัย ไม่กระทบฟื้นตัว</p>
                 </button>
 
-                <button type="button" onclick="selectEaLevel(2)" id="eaBtn-2" class="ea-card-btn text-left p-5 rounded-xl border border-amber-300 bg-amber-50 space-y-2 focus:outline-none cursor-pointer hover:border-amber-400 ring-2 ring-amber-500 shadow-md">
-                    <div class="flex justify-between items-center">
-                        <span class="text-xs font-bold text-amber-800 uppercase tracking-wider">30 - 35 kcal/kg FFM</span>
-                        <span id="eaBadge-2" class="text-[10px] bg-amber-500 text-white px-2 py-0.5 rounded-full font-bold">กำลังเลือกอยู่</span>
-                    </div>
-                    <div class="font-bold text-slate-900 text-base">Moderate Deficit</div>
-                    <p class="text-xs text-slate-600"><strong>Fat Loss Sweet Spot!</strong> ดึงไขมันสะสมออกมาใช้สูงสุด โดยระบบยังทำงานปกติ</p>
-                    <span class="inline-block text-[11px] font-semibold text-amber-800 bg-amber-100 px-2 py-0.5 rounded">โซนเป้าหมายแนะนำ ⭐</span>
+                <button type="button" onclick="selectEaLevel(2)" id="eaBtn-2" class="ea-card-btn text-left p-4 rounded-xl border border-amber-300 bg-amber-50 ring-2 ring-amber-500 shadow-sm cursor-pointer">
+                    <div class="text-xs font-bold text-amber-800 uppercase">30 - 35 kcal/kg FFM</div>
+                    <div class="font-bold text-slate-900 text-sm mt-1">Moderate Deficit ⭐</div>
+                    <p class="text-[11px] text-slate-500 mt-1">Fat Loss Sweet Spot สลายไขมันดีเยี่ยม</p>
                 </button>
 
-                <button type="button" onclick="selectEaLevel(3)" id="eaBtn-3" class="ea-card-btn text-left p-5 rounded-xl border border-red-200 bg-red-50/30 space-y-2 focus:outline-none cursor-pointer hover:border-red-400">
-                    <div class="flex justify-between items-center">
-                        <span class="text-xs font-bold text-red-800 uppercase tracking-wider">&lt; 30 kcal/kg FFM</span>
-                        <span id="eaBadge-3" class="text-[10px] bg-red-200 text-red-900 px-2 py-0.5 rounded-full font-bold">คลิกเพื่อดู</span>
-                    </div>
-                    <div class="font-bold text-red-900 text-base">Low EA (LEA)</div>
-                    <p class="text-xs text-slate-600">เข้าสู่โหมดประหยัดพลังงาน RMR ตก ฮอร์โมนลดลง Cortisol สูง เกิด REDs</p>
-                    <span class="inline-block text-[11px] font-semibold text-red-700 bg-red-100 px-2 py-0.5 rounded">อันตราย / สลายกล้าม</span>
+                <button type="button" onclick="selectEaLevel(3)" id="eaBtn-3" class="ea-card-btn text-left p-4 rounded-xl border border-red-200 bg-red-50/30 cursor-pointer">
+                    <div class="text-xs font-bold text-red-800 uppercase">&lt; 30 kcal/kg FFM</div>
+                    <div class="font-bold text-red-900 text-sm mt-1">Low EA (LEA) ⚠️</div>
+                    <p class="text-[11px] text-slate-500 mt-1">เสี่ยง REDs, RMR ตก, สลายกล้ามเนื้อ</p>
                 </button>
             </div>
 
-            <!-- Dynamic EA Detail Inspection Panel -->
-            <div id="eaDetailPanel" class="bg-amber-50/70 border border-amber-200 rounded-xl p-6 transition-all duration-300 shadow-sm">
-                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-2 pb-4 mb-4 border-b border-amber-200/80">
-                    <div class="flex items-center space-x-3">
-                        <span id="detailIcon" class="text-3xl">⭐</span>
-                        <div>
-                            <span id="detailRange" class="text-xs font-bold text-amber-800 uppercase tracking-wider">30 - 35 kcal / kg FFM / day</span>
-                            <h3 id="detailTitle" class="text-lg font-bold text-slate-900">Moderate Deficit (Fat Loss Sweet Spot)</h3>
-                        </div>
-                    </div>
-                    <span id="detailStatusTag" class="px-3 py-1 bg-amber-100 text-amber-900 text-xs font-bold rounded-full border border-amber-300">
-                        โซนลดไขมันยอดเยี่ยมและปลอดภัย
-                    </span>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 text-xs">
-                    <div class="bg-white p-4 rounded-lg border border-slate-200/80 shadow-xs">
-                        <div class="font-bold text-slate-800 mb-1 flex items-center">
-                            <span class="mr-1.5">🔥</span> อัตราเผาผลาญ (RMR)
-                        </div>
-                        <p id="detailRmr" class="text-slate-600">
-                            ทำงานสอดคล้องกับแคลอรีที่ได้รับ ไม่เกิด Adaptive Thermogenesis รุนแรง ปรับลดเล็กน้อยตามมวลน้ำหนักตัวที่หายไป
-                        </p>
-                    </div>
-
-                    <div class="bg-white p-4 rounded-lg border border-slate-200/80 shadow-xs">
-                        <div class="font-bold text-slate-800 mb-1 flex items-center">
-                            <span class="mr-1.5">🧬</span> ฮอร์โมน & ระบบต่อมไร้ท่อ
-                        </div>
-                        <p id="detailHormone" class="text-slate-600">
-                            ฮอร์โมน T3, Leptin และ Insulin อยู่ในระดับที่รักษาสมดุล ร่างกายสลายไขมันสะสมได้รวดเร็วโดยไม่อ่อนเพลียสะสม
-                        </p>
-                    </div>
-
-                    <div class="bg-white p-4 rounded-lg border border-slate-200/80 shadow-xs">
-                        <div class="font-bold text-slate-800 mb-1 flex items-center">
-                            <span class="mr-1.5">💪</span> การฟื้นฟูกล้ามเนื้อ (MPS)
-                        </div>
-                        <p id="detailMuscle" class="text-slate-600">
-                            การสังเคราะห์โปรตีนในกล้ามเนื้อยังทำได้ดีเมื่อได้รับโปรตีน 1.8 - 2.0g/kg สามารถคงมวลกล้ามเนื้อและความแข็งแรงบนผาได้เต็มที่
-                        </p>
-                    </div>
-
-                    <div class="bg-white p-4 rounded-lg border border-slate-200/80 shadow-xs">
-                        <div class="font-bold text-slate-800 mb-1 flex items-center">
-                            <span class="mr-1.5">🎯</span> ประโยชน์ & คำแนะนำทางปฏิบัติ
-                        </div>
-                        <p id="detailAdvice" class="text-slate-600">
-                            ดึงไขมันสะสมมาใช้ได้ดีที่สุดโดยไม่ส่งผลเสียต่อร่างกาย เหมาะอย่างยิ่งสำหรับช่วงตัดน้ำหนักเพื่อเพิ่ม Strength-to-Weight Ratio
-                        </p>
+            <!-- Dynamic Detail Panel -->
+            <div id="eaDetailPanel" class="bg-amber-50/70 border border-amber-200 rounded-xl p-5 text-xs space-y-3">
+                <div class="flex items-center space-x-2">
+                    <span id="detailIcon" class="text-2xl">⭐</span>
+                    <div>
+                        <div id="detailRange" class="font-bold text-amber-800">30 - 35 kcal / kg FFM / day</div>
+                        <div id="detailTitle" class="font-extrabold text-sm text-slate-900">Moderate Deficit (Fat Loss Sweet Spot)</div>
                     </div>
                 </div>
-            </div>
-
-            <!-- Detailed Impact Comparison Table -->
-            <div class="overflow-x-auto border border-slate-200 rounded-xl">
-                <table class="w-full text-xs text-left text-slate-600">
-                    <thead class="text-xs text-slate-700 uppercase bg-slate-100 border-b border-slate-200">
-                        <tr>
-                            <th class="px-4 py-3">ระบบสรีรวิทยา</th>
-                            <th class="px-4 py-3 bg-emerald-50/50">สภาวะปกติ / Safe Deficit (EA 30 - 35)</th>
-                            <th class="px-4 py-3 bg-red-50/50">สภาวะพลังงานต่ำเรื้อรัง (LEA &lt; 30 / REDs)</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-slate-200">
-                        <tr>
-                            <td class="px-4 py-3 font-bold text-slate-800">อัตราการเผาผลาญขณะพัก (RMR)</td>
-                            <td class="px-4 py-3 bg-emerald-50/20">ทำงานได้เต็มประสิทธิภาพ ปรับลดลงเล็กน้อยตามมวลไขมันที่หายไป</td>
-                            <td class="px-4 py-3 bg-red-50/20 text-red-700 font-semibold">Adaptive Thermogenesis: RMR ลดลงผิดปกติ (>250 kcal/วัน)</td>
-                        </tr>
-                        <tr>
-                            <td class="px-4 py-3 font-bold text-slate-800">ต่อมไร้ท่อ & ฮอร์โมน</td>
-                            <td class="px-4 py-3 bg-emerald-50/20">ฮอร์โมนไทรอยด์ T3, Leptin, Insulin สมดุล คอร์ติซอลอยู่ในระดับปกติ</td>
-                            <td class="px-4 py-3 bg-red-50/20 text-red-700 font-semibold">T3 และ Leptin ตกต่ำอย่างรวดเร็ว, Cortisol พุ่งสูงขึ้น นำไปสู่ความเครียดสะสม</td>
-                        </tr>
-                        <tr>
-                            <td class="px-4 py-3 font-bold text-slate-800">กล้ามเนื้อ & โปรตีน (MPS)</td>
-                            <td class="px-4 py-3 bg-emerald-50/20">การสังเคราะห์โปรตีนในกล้ามเนื้อ (MPS) ปกติ รักษามวลกล้ามเนื้อได้ดีเมื่อได้โปรตีนถึง</td>
-                            <td class="px-4 py-3 bg-red-50/20 text-red-700 font-semibold">MPS ถูกยับยั้ง ร่างกายสลายกล้ามเนื้อเพื่อนำกรดอะมิโนมาใช้เป็นพลังงานชดเชย</td>
-                        </tr>
-                        <tr>
-                            <td class="px-4 py-3 font-bold text-slate-800">ความแข็งแรงของกระดูก</td>
-                            <td class="px-4 py-3 bg-emerald-50/20">สมดุลการสร้างและสลายกระดูกเป็นปกติ (Bone Mineral Density)</td>
-                            <td class="px-4 py-3 bg-red-50/20 text-red-700 font-semibold">กระบวนการสลายกระดูกสูงกว่าการสร้าง เสี่ยงต่อกระดูกบางและ Stress Fracture</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </section>
-
-        <!-- Active Wall Time Calculator Section -->
-        <section id="walltime" class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-slate-200 space-y-6">
-            <div>
-                <span class="inline-block px-3 py-1 bg-amber-100 text-amber-800 text-xs font-semibold rounded-full mb-2">Climbing EEE Calculator</span>
-                <h2 class="text-2xl font-bold text-slate-900">คำนวณพลังงานปีนผาจากเวลาปีนจริงบนผนัง (Active Wall Time)</h2>
-                <p class="text-sm text-slate-500 mt-1">ประเมินพลังงานออกกำลังกาย (EEE) ที่แม่นยำจากการโหนผาจริงเพื่อป้องกันการรับประทานแคลอรีเกินจริง</p>
-            </div>
-
-            <!-- Active Wall Time Calculator Sub-tool -->
-            <div class="bg-slate-50 p-6 rounded-xl border border-slate-200 space-y-4">
-                <div class="flex items-center space-x-2 text-slate-800">
-                    <span class="text-2xl">⏱️</span>
-                    <h3 class="font-bold text-base">คำนวณแคลอรีจากการเกร็งปีนจริง</h3>
-                </div>
-                <p class="text-xs text-slate-600 leading-relaxed">
-                    ในการปีนผาบลเดอร์ (Bouldering) เวลาส่วนใหญ่คือการพักคุย มองเส้นทาง และแปรงโฮลด์ เวลาที่ร่างกายเผาผลาญพลังงานระดับสูงจริงคือช่วงที่เท้าพ้นพื้น (Active Wall Time) ซึ่งมีอัตราเผาผลาญจริงประมาณ <strong class="text-slate-800">10 - 11 kcal ต่อนาที</strong>
-                </p>
-                
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-2 text-xs">
-                    <div class="bg-white p-4 rounded-xl border border-slate-200 space-y-2">
-                        <label class="block font-semibold text-slate-700">ระยะเวลาเซสชันทั้งหมด (นาที):</label>
-                        <input type="number" id="totalSessionMin" value="90" min="15" max="300" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm font-semibold focus:ring-2 focus:ring-amber-500 focus:outline-none">
-                        <span class="text-[11px] text-slate-400 block">รวมเวลาพัก พักมือ และดูเพื่อนปีน</span>
-                    </div>
-
-                    <div class="bg-white p-4 rounded-xl border border-slate-200 space-y-2">
-                        <label class="block font-semibold text-slate-700">เวลาปีนจริงบนผารวม (Active Wall Min):</label>
-                        <input type="number" id="activeWallMin" value="20" min="1" max="120" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm font-semibold text-amber-700 border-amber-300 focus:ring-2 focus:ring-amber-500 focus:outline-none">
-                        <span class="text-[11px] text-slate-400 block">นับเฉพาะนาทีที่เท้าโหนอยู่บนผนังจริง</span>
-                    </div>
-
-                    <div class="bg-gradient-to-br from-amber-500 to-amber-600 text-white p-4 rounded-xl shadow-sm flex flex-col justify-between">
-                        <div>
-                            <div class="text-amber-100 text-[11px] uppercase font-bold tracking-wider">พลังงานปีนผาจริง (Realistic EEE)</div>
-                            <div class="text-3xl font-extrabold my-1" id="realisticEeeDisplay">220 kcal</div>
-                        </div>
-                        <div class="text-[11px] text-amber-100/90 border-t border-amber-400/50 pt-2 flex justify-between items-center">
-                            <span>คัดลอกค่านี้ไปใช้?</span>
-                            <button type="button" onclick="applyEeeToCalculator()" class="px-2.5 py-1 bg-white text-amber-800 font-bold rounded hover:bg-amber-100 transition shadow-xs cursor-pointer">
-                                ⚡ ส่งไปที่ EEE
-                            </button>
-                        </div>
-                    </div>
-                </div>
+                <p id="detailAdvice" class="text-slate-600">ดึงไขมันสะสมมาใช้ได้ดีที่สุดโดยไม่ส่งผลเสียต่อร่างกาย เหมาะอย่างยิ่งสำหรับช่วงตัดน้ำหนักเพื่อเพิ่ม Strength-to-Weight Ratio ในการปีนผา</p>
             </div>
         </section>
 
@@ -439,7 +350,7 @@
         const weightInput = document.getElementById('weight');
         const bfInput = document.getElementById('bf');
         const eeeInput = document.getElementById('eee');
-        const targetEaSelect = document.getElementById('targetEa');
+        const goalSelect = document.getElementById('goalSelect');
 
         const weightVal = document.getElementById('weightVal');
         const bfVal = document.getElementById('bfVal');
@@ -448,181 +359,179 @@
         const ffmDisplay = document.getElementById('ffmDisplay');
         const bmrDisplay = document.getElementById('bmrDisplay');
 
-        const tdeeDeficitDisplay = document.getElementById('tdeeDeficitDisplay');
-        const tdeeEaRest = document.getElementById('tdeeEaRest');
-        const tdeeEaClimb = document.getElementById('tdeeEaClimb');
+        // Step 3 Displays
+        const restTotalCal = document.getElementById('restTotalCal');
+        const restMacroP = document.getElementById('restMacroP');
+        const restMacroC = document.getElementById('restMacroC');
+        const restMacroF = document.getElementById('restMacroF');
 
-        const eaTargetDisplay = document.getElementById('eaTargetDisplay');
-        const eaRestIntake = document.getElementById('eaRestIntake');
-        const eaClimbIntake = document.getElementById('eaClimbIntake');
+        const climbTotalCal = document.getElementById('climbTotalCal');
+        const climbEeeAdded = document.getElementById('climbEeeAdded');
+        const climbMacroP = document.getElementById('climbMacroP');
+        const climbMacroC = document.getElementById('climbMacroC');
+        const climbMacroF = document.getElementById('climbMacroF');
+
+        const tdeeFixedVal = document.getElementById('tdeeFixedVal');
+        const tdeeEaRestVal = document.getElementById('tdeeEaRestVal');
+        const tdeeEaClimbVal = document.getElementById('tdeeEaClimbVal');
 
         const leaAlert = document.getElementById('leaAlert');
         const leaAlertTitle = document.getElementById('leaAlertTitle');
         const leaAlertText = document.getElementById('leaAlertText');
+        const goalDescription = document.getElementById('goalDescription');
 
-        // Macro DOM Elements
-        const macroRestP = document.getElementById('macroRestP');
-        const macroRestC = document.getElementById('macroRestC');
-        const macroRestF = document.getElementById('macroRestF');
-
-        const macroClimbP = document.getElementById('macroClimbP');
-        const macroClimbC = document.getElementById('macroClimbC');
-        const macroClimbF = document.getElementById('macroClimbF');
-
-        // Wall Time Calculator Elements
+        // Active Wall Time Elements
         const totalSessionMin = document.getElementById('totalSessionMin');
         const activeWallMin = document.getElementById('activeWallMin');
-        const realisticEeeDisplay = document.getElementById('realisticEeeDisplay');
+        const wallTimeEeeResult = document.getElementById('wallTimeEeeResult');
 
         // Chart Instances
         let intakeChartInstance = null;
         let eaZoneChartInstance = null;
 
-        // Data for EA Levels Inspection
-        const eaLevelsData = [
-            {
-                range: "≥ 45 kcal / kg FFM / day",
-                title: "Optimal EA (สภาวะพลังงานสมบูรณ์)",
-                statusTag: "รักษาน้ำหนัก / เพิ่มมวลกล้ามเนื้อ",
-                statusClass: "bg-blue-100 text-blue-900 border-blue-300",
-                panelClass: "bg-blue-50/70 border-blue-200",
-                icon: "💙",
-                rmr: "ทำงานได้เต็ม 100% สมบูรณ์ ไม่มีการปรับลดลงของระบบเผาผลาญ",
-                hormone: "ฮอร์โมนไทรอยด์ (T3), Leptin และฮอร์โมนเพศทำงานได้เต็มประสิทธิภาพสูงสุด",
-                muscle: "อัตราการสังเคราะห์โปรตีนในกล้ามเนื้อ (MPS) สูงสุด พร้อมสำหรับการสร้างกล้ามเนื้อ",
-                advice: "เหมาะสำหรับช่วงรักษาน้ำหนัก หรือสร้างกล้ามเนื้อเพื่อเพิ่มพาวเวอร์ในการปีน"
-            },
-            {
-                range: "35 - 44 kcal / kg FFM / day",
-                title: "Mild Deficit (ลดไขมันแบบละมุน)",
-                statusTag: "ลดไขมันช้าๆ ปลอดภัยสูง",
-                statusClass: "bg-emerald-100 text-emerald-900 border-emerald-300",
-                panelClass: "bg-emerald-50/70 border-emerald-200",
-                icon: "🌱",
-                rmr: "ทำงานเป็นปกติแทบไม่กระทบ RMR ร่างกายปรับตัวน้อยมาก",
-                hormone: "ฮอร์โมนอยู่ในสมดุลดี ไม่ส่งผลกระทบต่ออารมณ์หรือการนอนหลับ",
-                muscle: "คงมวลกล้ามเนื้อได้อย่างสมบูรณ์ การฟื้นฟูหลังซ้อมทำได้รวดเร็ว",
-                advice: "เหมาะกับผู้ที่ต้องการลดน้ำหนักแบบยั่งยืน ไม่รีบร้อน และต้องการคงฟอร์มการปีนผาให้ได้ดีที่สุด"
-            },
-            {
-                range: "30 - 35 kcal / kg FFM / day",
-                title: "Moderate Deficit (Fat Loss Sweet Spot)",
-                statusTag: "โซนลดไขมันยอดเยี่ยมและปลอดภัย",
-                statusClass: "bg-amber-100 text-amber-900 border-amber-300",
-                panelClass: "bg-amber-50/70 border-amber-200",
-                icon: "⭐",
-                rmr: "ทำงานสอดคล้องกับแคลอรีที่ได้รับ ไม่เกิด Adaptive Thermogenesis รุนแรง",
-                hormone: "ฮอร์โมน T3, Leptin และ Insulin อยู่ในระดับสมดุล ร่างกายสลายไขมันสะสมได้รวดเร็ว",
-                muscle: "การสังเคราะห์โปรตีนทำได้ดีเมื่อได้รับโปรตีน 1.8 - 2.0g/kg สามารถคงพาวเวอร์บนผาได้ดี",
-                advice: "ดึงไขมันสะสมมาใช้ได้ดีที่สุดโดยไม่ส่งผลเสียต่อร่างกาย เหมาะอย่างยิ่งสำหรับช่วงตัดน้ำหนักเพื่อเพิ่ม Strength-to-Weight Ratio"
-            },
-            {
-                range: "< 30 kcal / kg FFM / day",
-                title: "Low EA (LEA - Low Energy Availability)",
-                statusTag: "อันตราย / เสี่ยงภาวะ REDs",
-                statusClass: "bg-red-100 text-red-900 border-red-300",
-                panelClass: "bg-red-50/70 border-red-200",
-                icon: "⚠️",
-                rmr: "เกิด Adaptive Thermogenesis รุนแรง ระบบเผาผลาญปรับลดลง >250 kcal/วัน",
-                hormone: "T3 และ Leptin ตกต่ำอย่างรวดเร็ว, Cortisol พุ่งสูง ร่างกายเครียดสะสม ฟื้นตัวช้า",
-                muscle: "MPS ถูกยับยั้ง ร่างกายเริ่มสลายกล้ามเนื้อเพื่อนำกรดอะมิโนมาใช้เป็นพลังงานชดเชย",
-                advice: "หลีกเลี่ยงการอยู่ในสภาวะนี้ต่อเนื่องเกิน 2-3 วัน เสี่ยงต่อการบาดเจ็บ กระดูกบาง และความแข็งแรงลดลง"
-            }
-        ];
+        // Goal EA Mapping
+        const goalEaMap = {
+            'cut': 33,
+            'maintain': 45,
+            'muscle': 48
+        };
 
-        // Main Calculation Engine
+        const goalDescMap = {
+            'cut': '<strong>คำแนะนำช่วงลดไขมัน:</strong> กำหนด EA ไว้ที่ 33 kcal/kg FFM ซึ่งเป็นจุดที่ดึงไขมันสะสมออกมาใช้ได้มากที่สุด โดยไม่ทำให้ฮอร์โมนไทรอยด์ตก และรักษามวลกล้ามเนื้อไว้ได้ครบถ้วน',
+            'maintain': '<strong>คำแนะนำช่วงรักษาน้ำหนัก:</strong> กำหนด EA ไว้ที่ 45 kcal/kg FFM เพื่อให้ร่างกายมีพลังงานสมบูรณ์ 100% ฟื้นตัวจากการซ้อมได้เร็วที่สุด และรักษาระดับพาวเวอร์บนผาได้เต็มที่',
+            'muscle': '<strong>คำแนะนำช่วงเพิ่มกล้ามเนื้อ:</strong> กำหนด EA ไว้ที่ 48 kcal/kg FFM ชดเชยพลังงานเกินเล็กน้อยเพื่อกระตุ้นการสร้างเนื้อเยื่อกล้ามเนื้อใหม่ เพิ่มพลังข้อและกำลังแขน'
+        };
+
+        // LocalStorage Helpers
+        function saveSettings() {
+            const settings = {
+                weight: weightInput.value,
+                bf: bfInput.value,
+                eee: eeeInput.value,
+                goal: goalSelect.value,
+                totalSessionMin: totalSessionMin.value,
+                activeWallMin: activeWallMin.value
+            };
+            localStorage.setItem('kingea_settings', JSON.stringify(settings));
+        }
+
+        function loadSettings() {
+            const saved = localStorage.getItem('kingea_settings');
+            if (saved) {
+                try {
+                    const settings = JSON.parse(saved);
+                    if (settings.weight) weightInput.value = settings.weight;
+                    if (settings.bf) bfInput.value = settings.bf;
+                    if (settings.eee) eeeInput.value = settings.eee;
+                    if (settings.goal) goalSelect.value = settings.goal;
+                    if (settings.totalSessionMin) totalSessionMin.value = settings.totalSessionMin;
+                    if (settings.activeWallMin) activeWallMin.value = settings.activeWallMin;
+                } catch(e) {
+                    console.error("Could not parse saved settings", e);
+                }
+            }
+        }
+
+        // Preset Helper
+        function setEeePreset(value) {
+            eeeInput.value = value;
+            calculate();
+        }
+
+        function calculateWallTimeEee() {
+            const activeMin = parseFloat(activeWallMin.value) || 0;
+            const calculated = Math.round(activeMin * 11);
+            wallTimeEeeResult.textContent = calculated;
+            return calculated;
+        }
+
+        function applyWallTimeEee() {
+            const calculated = calculateWallTimeEee();
+            eeeInput.value = Math.min(700, Math.max(100, calculated));
+            calculate();
+        }
+
+        // Main Calculation Function
         function calculate() {
             const weight = parseFloat(weightInput.value);
             const bf = parseFloat(bfInput.value);
             const eee = parseFloat(eeeInput.value);
-            const targetEa = parseFloat(targetEaSelect.value);
+            const goalKey = goalSelect.value;
+            const targetEa = goalEaMap[goalKey] || 33;
 
-            // Update range labels
-            weightVal.textContent = weight;
-            bfVal.textContent = bf;
+            // Update Input Value Displays
+            weightVal.textContent = `${weight} kg`;
+            bfVal.textContent = `${bf}%`;
             eeeVal.textContent = eee;
+            climbEeeAdded.textContent = eee;
+
+            // Goal Description Update
+            goalDescription.innerHTML = goalDescMap[goalKey];
 
             // 1. FFM & BMR (Katch-McArdle)
             const ffm = weight * (1 - (bf / 100));
             const bmr = 370 + (21.6 * ffm);
 
-            ffmDisplay.textContent = ffm.toFixed(1);
-            bmrDisplay.textContent = Math.round(bmr).toLocaleString();
+            ffmDisplay.textContent = `${ffm.toFixed(1)} kg`;
+            bmrDisplay.textContent = `${Math.round(bmr).toLocaleString()} kcal`;
 
-            // 2. TDEE Model (Multiplier 1.55 for Office worker + Climbing)
+            // 2. Target Daily Intake (EA Strategy)
+            const restIntake = targetEa * ffm;
+            const climbIntake = (targetEa * ffm) + eee;
+
+            restTotalCal.innerHTML = `${Math.round(restIntake).toLocaleString()} <span class="text-sm font-normal text-slate-500">kcal/วัน</span>`;
+            climbTotalCal.innerHTML = `${Math.round(climbIntake).toLocaleString()} <span class="text-sm font-normal text-amber-800/60">kcal/วัน</span>`;
+
+            // Macros Rest Day
+            const restP = weight * 1.8;
+            const restF = (restIntake * 0.25) / 9;
+            const restC = Math.max(0, (restIntake - (restP * 4) - (restF * 9)) / 4);
+
+            restMacroP.textContent = `${Math.round(restP)}g`;
+            restMacroF.textContent = `${Math.round(restF)}g`;
+            restMacroC.textContent = `${Math.round(restC)}g`;
+
+            // Macros Climb Day
+            const climbP = weight * 2.0;
+            const climbF = (climbIntake * 0.25) / 9;
+            const climbC = Math.max(0, (climbIntake - (climbP * 4) - (climbF * 9)) / 4);
+
+            climbMacroP.textContent = `${Math.round(climbP)}g`;
+            climbMacroF.textContent = `${Math.round(climbF)}g`;
+            climbMacroC.textContent = `${Math.round(climbC)}g`;
+
+            // 3. TDEE Model Comparison
             const tdeeBaseline = bmr * 1.55;
-            const tdeeDeficit = tdeeBaseline * 0.80; // -20% Deficit
+            const tdeeFixed = goalKey === 'cut' ? tdeeBaseline * 0.80 : tdeeBaseline;
             
-            const tdeeEaRestVal = tdeeDeficit / ffm;
-            const tdeeEaClimbVal = (tdeeDeficit - eee) / ffm;
+            const tdeeEaRest = tdeeFixed / ffm;
+            const tdeeEaClimb = (tdeeFixed - eee) / ffm;
 
-            tdeeDeficitDisplay.innerHTML = `${Math.round(tdeeDeficit).toLocaleString()} <span class="text-xs font-normal text-slate-500">kcal/วัน</span>`;
-            tdeeEaRest.textContent = `${tdeeEaRestVal.toFixed(1)} kcal`;
+            tdeeFixedVal.textContent = Math.round(tdeeFixed).toLocaleString();
+            tdeeEaRestVal.textContent = tdeeEaRest.toFixed(1);
             
-            if (tdeeEaClimbVal < 30) {
-                tdeeEaClimb.className = "font-bold text-red-600";
-                tdeeEaClimb.textContent = `${tdeeEaClimbVal.toFixed(1)} kcal (LEA!)`;
-                
-                // Alert Box Settings
+            if (tdeeEaClimb < 30) {
+                tdeeEaClimbVal.className = "text-red-600 font-bold";
+                tdeeEaClimbVal.textContent = `${tdeeEaClimb.toFixed(1)} (LEA! ⚠️)`;
+
                 leaAlert.className = "p-4 rounded-xl bg-red-100 text-red-900 border border-red-200 text-xs flex items-start space-x-3";
-                leaAlertTitle.textContent = "คำเตือน: ความเสี่ยงภาวะ LEA จากโมเดล TDEE";
-                leaAlertText.textContent = `หากรับประทานอาหารตามโมเดล TDEE (${Math.round(tdeeDeficit).toLocaleString()} kcal) ในวันปีนผา ค่า EA ของคุณจะลดลงเหลือเพียง ${tdeeEaClimbVal.toFixed(1)} kcal/kg FFM/day ซึ่งต่ำกว่าเกณฑ์ความปลอดภัย (<30 kcal) เสี่ยงต่อการสลายกล้ามเนื้อและ RMR ลดลง`;
+                leaAlertTitle.textContent = "คำเตือนภาวะ LEA จากการกินตาม TDEE แบบคงที่";
+                leaAlertText.textContent = `หากกินแคลอรีเท่ากันทุกวัน (${Math.round(tdeeFixed).toLocaleString()} kcal) ในวันปีนผา ค่า EA ของคุณจะตกลงเหลือเพียง ${tdeeEaClimb.toFixed(1)} kcal/kg FFM ซึ่งต่ำกว่าเกณฑ์ความปลอดภัย (<30 kcal) เสี่ยงต่อการสลายกล้ามเนื้อและอัตราเผาผลาญลดลง`;
             } else {
-                tdeeEaClimb.className = "font-bold text-emerald-600";
-                tdeeEaClimb.textContent = `${tdeeEaClimbVal.toFixed(1)} kcal (Safe)`;
+                tdeeEaClimbVal.className = "text-emerald-600 font-bold";
+                tdeeEaClimbVal.textContent = `${tdeeEaClimb.toFixed(1)} (Safe ✅)`;
 
                 leaAlert.className = "p-4 rounded-xl bg-emerald-100 text-emerald-900 border border-emerald-200 text-xs flex items-start space-x-3";
-                leaAlertTitle.textContent = "สภาวะปลอดภัย: โมเดล TDEE ยังอยู่ในเกณฑ์ที่รับได้";
-                leaAlertText.textContent = `ค่า EA ในวันปีนผาอยู่ที่ ${tdeeEaClimbVal.toFixed(1)} kcal/kg FFM/day ซึ่งยังไม่ตกไปในโซนอันตราย (<30 kcal)`;
+                leaAlertTitle.textContent = "สภาวะปลอดภัย: พลังงานเพียงพอตลอดทั้งสัปดาห์";
+                leaAlertText.textContent = `ค่า EA ในวันปีนผาอยู่ที่ ${tdeeEaClimb.toFixed(1)} kcal/kg FFM ซึ่งอยู่ในเกณฑ์ที่ปลอดภัย ไม่เสี่ยงต่อภาวะ LEA`;
             }
 
-            // 3. EA Strategy Model
-            const eaRestIntakeVal = (targetEa * ffm);
-            const eaClimbIntakeVal = (targetEa * ffm) + eee;
-
-            eaTargetDisplay.innerHTML = `${Math.round(eaRestIntakeVal).toLocaleString()} - ${Math.round(eaClimbIntakeVal).toLocaleString()} <span class="text-xs font-normal text-slate-500">kcal</span>`;
-            eaRestIntake.textContent = `${Math.round(eaRestIntakeVal).toLocaleString()} kcal`;
-            eaClimbIntake.textContent = `${Math.round(eaClimbIntakeVal).toLocaleString()} kcal`;
-
-            // 4. Macro Calculation
-            // Rest Day
-            const restP = weight * 1.8;
-            const restF = (eaRestIntakeVal * 0.25) / 9;
-            const restC = Math.max(0, (eaRestIntakeVal - (restP * 4) - (restF * 9)) / 4);
-
-            macroRestP.textContent = `${Math.round(restP)}g`;
-            macroRestF.textContent = `${Math.round(restF)}g`;
-            macroRestC.textContent = `${Math.round(restC)}g`;
-
-            // Climb Day
-            const climbP = weight * 2.0;
-            const climbF = (eaClimbIntakeVal * 0.25) / 9;
-            const climbC = Math.max(0, (eaClimbIntakeVal - (climbP * 4) - (climbF * 9)) / 4);
-
-            macroClimbP.textContent = `${Math.round(climbP)}g`;
-            macroClimbF.textContent = `${Math.round(climbF)}g`;
-            macroClimbC.textContent = `${Math.round(climbC)}g`;
-
-            // 5. Update Charts
-            updateCharts(tdeeDeficit, eaRestIntakeVal, eaClimbIntakeVal, tdeeEaRestVal, tdeeEaClimbVal, targetEa);
+            // Update Charts & Save
+            updateCharts(tdeeFixed, restIntake, climbIntake, tdeeEaRest, tdeeEaClimb, targetEa);
+            saveSettings();
         }
 
-        // Active Wall Time Calculator Engine
-        function calculateWallTime() {
-            const activeMin = parseFloat(activeWallMin.value) || 0;
-            const eeeCalculated = Math.round(activeMin * 11); // Average 11 kcal/min during active climbing
-            realisticEeeDisplay.textContent = `${eeeCalculated} kcal`;
-            return eeeCalculated;
-        }
-
-        function applyEeeToCalculator() {
-            const val = calculateWallTime();
-            eeeInput.value = Math.min(700, Math.max(100, val));
-            calculate();
-            document.getElementById('calculator').scrollIntoView({ behavior: 'smooth' });
-        }
-
-        // Initialize Charts
+        // Chart Functions
         function initCharts() {
             const ctxIntake = document.getElementById('intakeChart').getContext('2d');
             intakeChartInstance = new Chart(ctxIntake, {
@@ -631,13 +540,13 @@
                     labels: ['วันพัก (Rest Day)', 'วันปีนผา (Climbing Day)'],
                     datasets: [
                         {
-                            label: 'TDEE Model (-20%)',
+                            label: 'TDEE Model (กินเท่ากัน)',
                             data: [0, 0],
                             backgroundColor: '#f59e0b',
                             borderRadius: 6
                         },
                         {
-                            label: 'EA Strategy Model',
+                            label: 'EA Strategy (ยืดหยุ่นตามกิจกรรม)',
                             data: [0, 0],
                             backgroundColor: '#2563eb',
                             borderRadius: 6
@@ -668,87 +577,68 @@
                     responsive: true,
                     maintainAspectRatio: false,
                     plugins: { legend: { display: false } },
-                    scales: { y: { beginAtZero: true, max: 50 } }
+                    scales: { y: { beginAtZero: true, max: 55 } }
                 }
             });
         }
 
-        function updateCharts(tdeeDeficit, eaRest, eaClimb, tdeeEaRestVal, tdeeEaClimbVal, targetEa) {
+        function updateCharts(tdeeFixed, restIntake, climbIntake, tdeeEaRest, tdeeEaClimb, targetEa) {
             if (!intakeChartInstance || !eaZoneChartInstance) return;
 
-            // Update Intake Chart
-            intakeChartInstance.data.datasets[0].data = [Math.round(tdeeDeficit), Math.round(tdeeDeficit)];
-            intakeChartInstance.data.datasets[1].data = [Math.round(eaRest), Math.round(eaClimb)];
+            intakeChartInstance.data.datasets[0].data = [Math.round(tdeeFixed), Math.round(tdeeFixed)];
+            intakeChartInstance.data.datasets[1].data = [Math.round(restIntake), Math.round(climbIntake)];
             intakeChartInstance.update();
 
-            // Update EA Zone Chart
             eaZoneChartInstance.data.datasets[0].data = [
-                tdeeEaRestVal.toFixed(1),
-                tdeeEaClimbVal.toFixed(1),
+                tdeeEaRest.toFixed(1),
+                tdeeEaClimb.toFixed(1),
                 targetEa,
                 targetEa
             ];
             eaZoneChartInstance.update();
         }
 
-        // Select EA Level Interactive Panel Switcher
+        // EA Level Inspector
+        const eaLevelsData = [
+            { icon: "💙", range: "≥ 45 kcal / kg FFM / day", title: "Optimal EA (สภาวะพลังงานสมบูรณ์)", advice: "ระบบเผาผลาญและฮอร์โมนทำงานได้เต็ม 100% เหมาะสำหรับช่วงเพิ่มกล้ามเนื้อและรักษาน้ำหนัก" },
+            { icon: "🌱", range: "35 - 44 kcal / kg FFM / day", title: "Mild Deficit (ลดไขมันแบบละมุน)", advice: "การฟื้นฟูหลังซ้อมทำได้ดี ไม่ส่งผลกระทบต่ออารมณ์หรือการนอนหลับ ลดไขมันแบบค่อยเป็นค่อยไป" },
+            { icon: "⭐", range: "30 - 35 kcal / kg FFM / day", title: "Moderate Deficit (Fat Loss Sweet Spot)", advice: "ดึงไขมันสะสมมาใช้ได้ดีที่สุดโดยไม่ส่งผลเสียต่อร่างกาย เหมาะอย่างยิ่งสำหรับช่วงตัดน้ำหนักเพื่อเพิ่ม Strength-to-Weight Ratio" },
+            { icon: "⚠️", range: "< 30 kcal / kg FFM / day", title: "Low EA (LEA - สภาวะพลังงานจำกัด)", advice: "เสี่ยงต่อภาวะ REDs ระบบเผาผลาญปรับลดลง ฮอร์โมนตก เสี่ยงต่อการบาดเจ็บและสลายมวลกล้ามเนื้อ" }
+        ];
+
         function selectEaLevel(index) {
             const data = eaLevelsData[index];
             if (!data) return;
 
-            // Reset all button styles
             for (let i = 0; i < 4; i++) {
                 const btn = document.getElementById(`eaBtn-${i}`);
-                const badge = document.getElementById(`eaBadge-${i}`);
-                if (btn) btn.classList.remove('ring-2', 'ring-amber-500', 'ring-blue-500', 'ring-emerald-500', 'ring-red-500', 'shadow-md');
-                if (badge) {
-                    badge.textContent = "คลิกเพื่อดู";
-                    badge.className = "text-[10px] bg-slate-200 text-slate-700 px-2 py-0.5 rounded-full font-bold";
-                }
+                if (btn) btn.classList.remove('ring-2', 'ring-amber-500', 'shadow-sm');
             }
-
-            // Set active button style
             const activeBtn = document.getElementById(`eaBtn-${index}`);
-            const activeBadge = document.getElementById(`eaBadge-${index}`);
-            if (activeBtn) activeBtn.classList.add('ring-2', 'ring-amber-500', 'shadow-md');
-            if (activeBadge) {
-                activeBadge.textContent = "กำลังเลือกอยู่";
-                activeBadge.className = "text-[10px] bg-amber-500 text-white px-2 py-0.5 rounded-full font-bold";
-            }
+            if (activeBtn) activeBtn.classList.add('ring-2', 'ring-amber-500', 'shadow-sm');
 
-            // Update Inspection Panel
             document.getElementById('detailIcon').textContent = data.icon;
             document.getElementById('detailRange').textContent = data.range;
             document.getElementById('detailTitle').textContent = data.title;
-            
-            const tagEl = document.getElementById('detailStatusTag');
-            tagEl.textContent = data.statusTag;
-            tagEl.className = `px-3 py-1 text-xs font-bold rounded-full border ${data.statusClass}`;
-
-            document.getElementById('eaDetailPanel').className = `${data.panelClass} border rounded-xl p-6 transition-all duration-300 shadow-sm`;
-
-            document.getElementById('detailRmr').textContent = data.rmr;
-            document.getElementById('detailHormone').textContent = data.hormone;
-            document.getElementById('detailMuscle').textContent = data.muscle;
             document.getElementById('detailAdvice').textContent = data.advice;
         }
 
-        // Event Listeners
-        [weightInput, bfInput, eeeInput, targetEaSelect].forEach(element => {
-            element.addEventListener('input', calculate);
-            element.addEventListener('change', calculate);
+        // Listeners
+        [weightInput, bfInput, eeeInput, goalSelect].forEach(el => {
+            el.addEventListener('input', calculate);
+            el.addEventListener('change', calculate);
         });
 
-        [totalSessionMin, activeWallMin].forEach(element => {
-            element.addEventListener('input', calculateWallTime);
+        [totalSessionMin, activeWallMin].forEach(el => {
+            el.addEventListener('input', calculateWallTimeEee);
         });
 
-        // Initialize on load
+        // Initialize App
         window.addEventListener('DOMContentLoaded', () => {
             initCharts();
+            loadSettings();
+            calculateWallTimeEee();
             calculate();
-            calculateWallTime();
-            selectEaLevel(2); // Default selected level: Moderate Deficit
         });
     </script>
 </body>
